@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Jeu 19 Avril 2018 à 02:12
+-- Généré le :  Jeu 19 Avril 2018 à 21:07
 -- Version du serveur :  5.6.37
 -- Version de PHP :  5.6.31
 
@@ -29,24 +29,25 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `Album` (
   `id` int(11) NOT NULL,
   `titre` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `prix` decimal(10,0) DEFAULT NULL,
+  `prix` decimal(10,2) DEFAULT NULL,
   `genre_id` int(11) DEFAULT NULL,
   `annee_sortie` date DEFAULT NULL,
   `maison_distribution` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `image_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `artiste_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Contenu de la table `Album`
 --
 
 INSERT INTO `Album` (`id`, `titre`, `prix`, `genre_id`, `annee_sortie`, `maison_distribution`, `image_url`, `artiste_id`) VALUES
-(1, 'Test ajout', '30', 2, '1999-02-02', 'test', 'test', 1),
-(2, 'Test ajout', '30', 2, '1999-02-02', 'test', 'test', 1),
-(3, 'Test ajout', '30', 2, '1999-02-02', 'test', 'test', 1),
-(4, 'Test ajout', '30', 2, '1999-02-02', 'test', 'test', 1),
-(8, 'Test ajout', '30', 2, '1999-02-02', 'test', 'test', 1);
+(1, 'Test ajout', '30.00', 2, '1999-02-02', 'test', 'test', 1),
+(3, 'Test ajout', '30.00', 2, '1999-02-02', 'test', 'test', 1),
+(55, 'a-TestModiAlbum-InValide', '99.90', 1, '2000-01-01', 'MaisonInValide', 'ImageInValide', 1),
+(57, 'Test ajout', '30.22', 2, '1999-02-02', 'test', 'test', 1),
+(65, 'Test ajout', '30.22', 2, '1999-02-02', 'test', 'test', 1),
+(72, 'Test ajout', '30.22', 2, '1999-02-02', 'test', 'test', 1);
 
 -- --------------------------------------------------------
 
@@ -59,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `Artiste` (
   `nom` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `membre` tinyint(1) DEFAULT NULL,
   `photo_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Contenu de la table `Artiste`
@@ -69,7 +70,9 @@ INSERT INTO `Artiste` (`id`, `nom`, `membre`, `photo_url`) VALUES
 (1, 'Test1', 0, 'Test1aa'),
 (2, 'Test2', 1, 'Test2aa'),
 (3, 'Test3', 1, 'Test3aa'),
-(23, 'TestAjout', 0, 'Test5aa');
+(47, 'a-TestModifier-InValide', 0, 'Modifition-InValide'),
+(79, 'TestAjout', 0, 'Test5aa'),
+(92, 'TestAjout', 0, 'Test5aa');
 
 -- --------------------------------------------------------
 
@@ -126,12 +129,12 @@ ALTER TABLE `Genre`
 -- AUTO_INCREMENT pour la table `Album`
 --
 ALTER TABLE `Album`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=81;
 --
 -- AUTO_INCREMENT pour la table `Artiste`
 --
 ALTER TABLE `Artiste`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=96;
 --
 -- AUTO_INCREMENT pour la table `Genre`
 --
