@@ -5,27 +5,33 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class connexionControler {
-	private final static String url = "jdbc:mysql://localhost/LesArtistesG";
+	private final String url = "jdbc:mysql://localhost/LesArtistesG";
+	private Connection connexion;
 	
-	private static Connection getConnexion() throws SQLException, ClassNotFoundException {
+	private Connection getConnexion() throws SQLException, ClassNotFoundException {
 		Class.forName("org.gjt.mm.mysql.Driver"); 
 		return DriverManager.getConnection(url,"root","mysql");
 	}
 	
-	private static void closeConnexion(Connection connexion) throws SQLException, ClassNotFoundException {
+	public void closeConnexion() throws SQLException, ClassNotFoundException {
 		Class.forName("org.gjt.mm.mysql.Driver"); 
-		connexion.close();
+		this.connexion.close();
 	}
 	
-	public static ResultSet executerRequete(String requete) throws ClassNotFoundException, SQLException {
-		Connection connexion = getConnexion();
+	public ResultSet executerRequete(String requete) throws ClassNotFoundException, SQLException {
+		this.connexion = getConnexion();
 
 		Statement statement = connexion.createStatement();
 		
-		ResultSet rs = statement.executeQuery(requete);
+		return statement.executeQuery(requete);
+
+	}
+	
+	public void update(String requete) throws SQLException, ClassNotFoundException {
+		this.connexion = getConnexion();
+
+		Statement statement = connexion.createStatement();
 		
-		closeConnexion(connexion);
-		
-		return rs;
+		statement.executeUpdate(requete);
 	}
 }
