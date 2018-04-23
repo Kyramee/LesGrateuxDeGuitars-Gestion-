@@ -8,6 +8,7 @@ public class gestionArtistes {
 	private ArrayList<Artiste> tabArtiste;
 	private ArrayList<Album> tabAlbum;
 	private connexionControler cc;
+	private int lastInt = 0;
 
 	public gestionArtistes() {
 		cc = new connexionControler();
@@ -39,12 +40,15 @@ public class gestionArtistes {
 			requete += " nom LIKE '%" + nom + "%'";
 		}
 
+		requete += " ORDER BY nom";
+
 		try {
 			ResultSet result = cc.executerRequete(requete);
 
 			while (result.next()) {
 				this.tabArtiste.add(new Artiste(result.getInt("id"), result.getString("nom"),
 						result.getBoolean("membre"), result.getString("photo_url")));
+				obtenirLastInt(result.getInt("id"));
 			}
 
 			cc.closeConnexion();
@@ -86,6 +90,7 @@ public class gestionArtistes {
 			System.out.println(e);
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
+		accessTabArtiste();
 	}
 
 	public void ajouterAlbum(String titre, double prix, int genre, String anneeSortie, String maisonDistribution,
@@ -100,11 +105,14 @@ public class gestionArtistes {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
+		accessTabAlbum();
 	}
 
-	public void modifierArtiste(int id, String nom, String membre, String photoUrl) {
-		String requete = "UPDATE Artiste SET nom = '" + nom + ", membre = " + membre + ", photo_url = '" + photoUrl
-				+ "' WHERE id = " + id;
+	public void modifierAlbum(int id, String titre, double prix, int genre, String anneeSortie,
+			String maisonDistribution, String imageUrl, int idArtiste) {
+		String requete = "UPDATE Album SET titre = '" + titre + "', prix = " + prix + ", genre_id = " + genre
+				+ ", annee_sortie = '" + anneeSortie + "', " + "maison_distribution = '" + maisonDistribution
+				+ "', image_url = '" + imageUrl + "', artiste_id = " + idArtiste + " WHERE id = " + id;
 
 		try {
 			cc.update(requete);
@@ -112,6 +120,21 @@ public class gestionArtistes {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
+		accessTabAlbum();
+	}
+
+	public void modifierArtiste(int id, String nom, String membre, String photoUrl) {
+		String requete = "UPDATE Artiste SET nom = '" + nom + "', membre = " + membre + ", photo_url = '" + photoUrl
+				+ "' WHERE id = " + id;
+
+		try {
+
+			cc.update(requete);
+			cc.closeConnexion();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+		accessTabArtiste();
 	}
 
 	public void supprimer(String table, int id) {
@@ -123,17 +146,23 @@ public class gestionArtistes {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
+		accessTabArtiste();
+		accessTabAlbum();
 	}
-	
+
+	private void obtenirLastInt(int nombre) {
+		lastInt = (nombre > lastInt) ? nombre : lastInt;
+	}
+
 	public boolean checkUser(String nom, String password) {
 		String requete = "SELECT * FROM Utilisateur WHERE nom = '" + nom + "'";
 		boolean ok = false;
-		
+
 		try {
 			ResultSet result = cc.executerRequete(requete);
-			
-			if(result.next()) {
-				if(result.getString("password").equals(password)) {
+
+			if (result.next()) {
+				if (result.getString("password").equals(password)) {
 					ok = true;
 				}
 			}
@@ -141,7 +170,6 @@ public class gestionArtistes {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
-		
 		return ok;
 	}
 }

@@ -6,10 +6,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class vueGeneral extends JPanel {
+public class vueIndex extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	public vueGeneral(JFrame parent) {
+	public vueIndex(JFrame parent) {
 		super(new GridBagLayout());
 		String[] bouton = {"Ajouter", "Modifier", "Supprimer", "Rechercher", "Quitter"};
 		

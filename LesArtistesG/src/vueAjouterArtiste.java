@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -49,11 +50,13 @@ public class vueAjouterArtiste extends JPanel{
 	}
 	
 	public JPanel southPanel() {
-		JPanel jp = new JPanel(new FlowLayout());
-		JButton b = new JButton("0");
-		b.setSize(50, 20);
-		jp.add(b);
-		jp.add(new JButton("n"));
+		JPanel jp = new JPanel();
+		JButton ajouter = new JButton("Ajouter");
+		ajouter.setPreferredSize(new Dimension(100, 50));
+		jp.add(ajouter);
+		JButton cancel = new JButton("Annuler");
+		cancel.setPreferredSize(new Dimension(100, 50));
+		jp.add(cancel);
 		
 		return jp;
 	}

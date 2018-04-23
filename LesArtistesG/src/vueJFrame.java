@@ -16,7 +16,7 @@ public class vueJFrame extends JFrame{
 		//this.setIconImage(iconeFenetre.getImage());
 		Container contenu = getContentPane();
 		
-		contenu.add(new vueGeneral(this), BorderLayout.WEST);
+		contenu.add(new vueIndex(this), BorderLayout.WEST);
 		contenu.add(new vueAjouterArtiste(), BorderLayout.CENTER);
 	}
 }
