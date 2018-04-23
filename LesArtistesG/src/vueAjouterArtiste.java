@@ -51,12 +51,10 @@ public class vueAjouterArtiste extends JPanel{
 	
 	public JPanel southPanel() {
 		JPanel jp = new JPanel();
+		Dimension d = new Dimension(100, 40);
 		JButton ajouter = new JButton("Ajouter");
-		ajouter.setPreferredSize(new Dimension(100, 50));
+		ajouter.setPreferredSize(d);
 		jp.add(ajouter);
-		JButton cancel = new JButton("Annuler");
-		cancel.setPreferredSize(new Dimension(100, 50));
-		jp.add(cancel);
 		
 		return jp;
 	}

@@ -17,6 +17,6 @@ public class vueJFrame extends JFrame{
 		Container contenu = getContentPane();
 		
 		contenu.add(new vueIndex(this), BorderLayout.WEST);
-		contenu.add(new vueAjouterArtiste(), BorderLayout.CENTER);
+		contenu.add(new vueCentral(), BorderLayout.CENTER);
 	}
 }

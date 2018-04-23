@@ -71,7 +71,6 @@ public class gestionArtistes {
 						result.getString("maison_distribution"), result.getString("image_url"),
 						result.getInt("artiste_id")));
 			}
-
 			cc.closeConnexion();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
