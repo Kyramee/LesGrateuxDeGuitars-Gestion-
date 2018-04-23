@@ -6,7 +6,6 @@ import java.sql.Statement;
 
 public class connexionControler {
 	private final String url = "jdbc:mysql://localhost/LesArtistesG";
-	//jdbc:sqlite:c:/bd/dbEmployes.db
 	private Connection connexion;
 	
 	private Connection getConnexion() throws SQLException, ClassNotFoundException {

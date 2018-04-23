@@ -19,5 +19,4 @@ public class Artiste {
 	public int getId() {
 		return this.id;
 	}
-	
 }
