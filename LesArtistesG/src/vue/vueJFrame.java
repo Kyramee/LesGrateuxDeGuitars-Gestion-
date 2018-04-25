@@ -12,7 +12,7 @@ public class vueJFrame extends JFrame {
 	private Container contenu;
 
 	public vueJFrame() {
-		this.setResizable(false);
+		this.setResizable(true);
 		this.contenu = getContentPane();
 		// ImageIcon iconeFenetre = new
 		// ImageIcon(getClass().getResource("images/grateux.png"));
@@ -22,6 +22,7 @@ public class vueJFrame extends JFrame {
 	public void init() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.contenu.add(new vueOption(this), BorderLayout.CENTER);
+		this.setTitle("LesArtistesG - Options");
 		this.setSize(400, 220);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
@@ -30,6 +31,7 @@ public class vueJFrame extends JFrame {
 	public void vueArtisteAlbum(Boolean vue) {
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		vueCentral vc = new vueCentral();
+		this.setTitle("LesArtistesG - Index " + ((vue)? "artiste" : "album"));
 		vc.setNorthPanel();
 		this.contenu.add(vc, BorderLayout.CENTER);
 		start(750, 450, vue);
@@ -38,7 +40,7 @@ public class vueJFrame extends JFrame {
 	public void vueArtisteAlbum(int vue) {
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		vueCentral vc = new vueCentral();
-		vc.setNorthPanel(vue);
+		vc.setNorthPanel(vue, this);
 		this.contenu.add(vc, BorderLayout.CENTER);
 		start(750, 450, vue % 2 == 0);
 	}

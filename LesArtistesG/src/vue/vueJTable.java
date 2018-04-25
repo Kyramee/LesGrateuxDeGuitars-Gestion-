@@ -1,6 +1,8 @@
 package vue;
 
 
+import java.awt.Dimension;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,5 +24,6 @@ public class vueJTable extends JPanel {
 		controlerArtisteAlbum ga = new controlerArtisteAlbum();
 		JTable table = new JTable(new modeleJTable(ga.getTabArtiste()));
 		this.scroListe = new JScrollPane(table);
+		this.scroListe.setPreferredSize(new Dimension(500, 250));
 	}
 }

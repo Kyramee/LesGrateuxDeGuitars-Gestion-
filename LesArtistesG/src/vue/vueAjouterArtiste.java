@@ -9,10 +9,13 @@ import java.awt.Insets;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import controler.controlerAjouterArtiste;
 
 public class vueAjouterArtiste extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -24,11 +27,29 @@ public class vueAjouterArtiste extends JPanel {
 	private JLabel[] erreur = new JLabel[3];
 	private JTextField[] jText = new JTextField[2];
 	private JRadioButton[] jRadio = new JRadioButton[2];
+	private JFrame parent;
 
-	public vueAjouterArtiste() {
+	public vueAjouterArtiste(JFrame parent) {
 		super(new BorderLayout());
+		this.parent = parent;
 		add(centerPanel(), BorderLayout.CENTER);
 		add(southPanel(), BorderLayout.SOUTH);
+	}
+	
+	public void close() {
+		this.parent.dispose();
+	}
+	
+	public void setErreur(int index, String erreur) {
+		this.erreur[index].setText(erreur);
+	}
+	
+	public JTextField getJText(int index) {
+		return this.jText[index];
+	}
+	
+	public JRadioButton getRadio(int index) {
+		return this.jRadio[index];
 	}
 
 	public JPanel centerPanel() {
@@ -91,6 +112,7 @@ public class vueAjouterArtiste extends JPanel {
 		Dimension d = new Dimension(100, 40);
 		JButton ajouter = new JButton("Ajouter");
 		ajouter.setPreferredSize(d);
+		ajouter.addActionListener(new controlerAjouterArtiste(this));
 		jp.add(ajouter);
 
 		return jp;
