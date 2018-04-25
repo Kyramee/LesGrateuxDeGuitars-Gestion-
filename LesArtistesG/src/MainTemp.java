@@ -1,10 +1,10 @@
-import controler.controlerArtisteAlbum;
+import controler.controlerSysteme;
 import vue.vueJFrame;
 
 public class MainTemp {
 
 	public static void main(String[] args) {
-		controlerArtisteAlbum gA = new controlerArtisteAlbum();
+		controlerSysteme gA = new controlerSysteme();
 		
 		if(gA.checkUser("Groot", "root")) {
 			System.out.println("ok");

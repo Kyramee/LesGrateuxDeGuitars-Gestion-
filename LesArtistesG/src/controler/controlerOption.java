@@ -36,7 +36,7 @@ public class controlerOption implements ActionListener {
 	
 	public void afficher(Boolean vue) {
 		vueJFrame frame = new vueJFrame();
-		frame.vueArtisteAlbum(vue);
+		frame.vueCentral(vue);
 		this.parent.dispose();
 	}
 }

@@ -1,5 +1,6 @@
 package modele;
 
+import controler.controlerSysteme;
 
 public class Album {
 	private int id;
@@ -30,5 +31,26 @@ public class Album {
 	
 	public int getId() {
 		return this.id;
+	}
+
+	public String getTitre() {
+		return this.titre;
+	}
+
+	public double getPrix() {
+		return this.prix;
+	}
+
+	public String getGenre() {
+		controlerSysteme caa = new controlerSysteme();
+		return caa.getDescription(this.genre);
+	}
+
+	public String getDate() {
+		return this.anneeSortie;
+	}
+
+	public String getMaison() {
+		return this.maisonDistribution;
 	}
 }

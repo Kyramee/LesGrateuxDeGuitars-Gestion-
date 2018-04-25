@@ -28,27 +28,22 @@ public class vueJFrame extends JFrame {
 		this.setVisible(true);
 	}
 
-	public void vueArtisteAlbum(Boolean vue) {
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		vueCentral vc = new vueCentral();
-		this.setTitle("LesArtistesG - Index " + ((vue)? "artiste" : "album"));
-		vc.setNorthPanel();
-		this.contenu.add(vc, BorderLayout.CENTER);
-		start(750, 450, vue);
-	}
-
-	public void vueArtisteAlbum(int vue) {
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		vueCentral vc = new vueCentral();
-		vc.setNorthPanel(vue, this);
-		this.contenu.add(vc, BorderLayout.CENTER);
-		start(750, 450, vue % 2 == 0);
-	}
-
-	private void start(int width, int height, boolean vue) {
-		this.setSize(width, height);
+	public void vueCentral(Boolean vue) {
+		this.setSize(750, 450);
 		this.setLocationRelativeTo(null);
-		this.contenu.add(new vueIndex(this, vue), BorderLayout.WEST);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("LesArtistesG - Gestion des" + ((vue) ? "artistes" : "albumms"));
+		
+		vueCentral jp = new vueCentral(vue);
+		vueIndex vi = new vueIndex();
+		
+		this.contenu.add(jp, BorderLayout.CENTER);
+		
+		if (vue) {
+			vi.setListener(this, jp.getVueArtiste(), jp.getModeleArtiste());
+			this.contenu.add(vi, BorderLayout.WEST);
+		}
+		
 		this.setVisible(true);
 	}
 }

@@ -7,7 +7,8 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import controler.controlerIndex;
+import controler.controlerIndexArtiste;
+import modele.modeleJTableArtiste;
 
 public class vueIndex extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -16,10 +17,9 @@ public class vueIndex extends JPanel {
 	private JButton[] bouton = new JButton[5];
 	
 	
-	public vueIndex(vueJFrame parent, Boolean vue) {
+	public vueIndex() {
 		super(new GridBagLayout());
-		
-		controlerIndex cia = new controlerIndex(parent, vue);
+
 		GridBagConstraints constraint = new GridBagConstraints();
 		
 		constraint.fill = GridBagConstraints.BOTH;
@@ -33,9 +33,15 @@ public class vueIndex extends JPanel {
 		
 		for(int i = 0; i < 5; i++) {
 			this.bouton[i] = new JButton(this.nomBouton[i]);
-			this.bouton[i].addActionListener(cia);
 			this.add(this.bouton[i], constraint);
 			constraint.gridy++;
+		}
+	}
+	
+	public void setListener(vueJFrame parent, vueGestionArtiste vueArtiste, modeleJTableArtiste modele) {
+		
+		for(int i = 0; i < 5; i++) {
+			this.bouton[i].addActionListener(new controlerIndexArtiste(parent, vueArtiste, modele));
 		}
 	}
 }

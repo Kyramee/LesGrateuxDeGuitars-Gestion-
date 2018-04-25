@@ -14,11 +14,6 @@ public class Artiste {
 		this.photoUrl = photoUrl;
 	}
 
-	// TEMP VRM TEMP LIKE SUPER TEMP
-	public void afficher() {
-		System.out.println(this.id + " | " + this.nom + " | " + this.membre + " | " + this.photoUrl);
-	}
-
 	public int getId() {
 		return this.id;
 	}

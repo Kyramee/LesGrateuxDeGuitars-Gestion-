@@ -5,12 +5,12 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-public class modeleJTable extends AbstractTableModel {
+public class modeleJTableAlbum extends AbstractTableModel {
 
-	private final String[] titreColonnes = { "Id", "Nom", "Membre" };
-	private ArrayList<Artiste> donnes;
+	private final String[] titreColonnes = { "Id", "Titre", "Prix", "Genre", "Date de Sortie", "Maison de distribution" };
+	private ArrayList<Album> donnes;
 
-	public modeleJTable(ArrayList<Artiste> donnes) {
+	public modeleJTableAlbum(ArrayList<Album> donnes) {
 		this.donnes = donnes;
 	}
 
@@ -30,9 +30,15 @@ public class modeleJTable extends AbstractTableModel {
 			case 0:
 				return this.donnes.get(rowIndex).getId();
 			case 1:
-				return this.donnes.get(rowIndex).getNom();
+				return this.donnes.get(rowIndex).getTitre();
 			case 2:
-				return this.donnes.get(rowIndex).getMembre();
+				return this.donnes.get(rowIndex).getPrix();
+			case 3:
+				return this.donnes.get(rowIndex).getGenre();
+			case 4:
+				return this.donnes.get(rowIndex).getDate();
+			case 5:
+				return this.donnes.get(rowIndex).getMaison();
 			default:
 				throw new IllegalArgumentException(" index de colonne invalide: " + columnIndex);
 		}
@@ -46,7 +52,11 @@ public class modeleJTable extends AbstractTableModel {
 			case 1:
 				return String.class;
 			case 2:
-				return Boolean.class;
+				return Double.class;
+			case 3:
+			case 4:
+			case 5:
+				return String.class;
 			default:
 				throw new IllegalArgumentException(" index de colonne invalide: " + columnIndex);
 		}
