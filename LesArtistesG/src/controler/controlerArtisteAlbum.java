@@ -1,19 +1,24 @@
+package controler;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-public class gestionArtistes {
+import modele.Album;
+import modele.Artiste;
+
+public class controlerArtisteAlbum {
 
 	private ArrayList<Artiste> tabArtiste;
 	private ArrayList<Album> tabAlbum;
-	private connexionControler cc;
+	private controlerConnexion cc;
 	private int lastInt = 0;
 
-	public gestionArtistes() {
-		cc = new connexionControler();
-		this.tabArtiste = accessTabArtiste();
-		this.tabAlbum = accessTabAlbum();
+	public controlerArtisteAlbum() {
+		cc = new controlerConnexion();
+		accessTabArtiste("", "", false);
+		accessTabAlbum();
 	}
 
 	public ArrayList<Artiste> getTabArtiste() {
@@ -24,20 +29,16 @@ public class gestionArtistes {
 		return this.tabAlbum;
 	}
 
-	public ArrayList<Artiste> accessTabArtiste() {
-		return accessTabArtiste("", "", false);
-	}
-
-	public ArrayList<Artiste> accessTabArtiste(String id, String nom, Boolean membre) {
+	public void accessTabArtiste(String id, String nom, Boolean membre) {
 		this.tabArtiste = new ArrayList<>();
-		String requete = "SELECT * FROM Artiste WHERE membre = " + membre;
+		String requete = "SELECT * FROM Artiste WHERE nom LIKE '%" + nom + "%'";
 
 		if (!id.isEmpty()) {
 			requete += " id = " + id;
 		}
 
-		if (!nom.isEmpty()) {
-			requete += " nom LIKE '%" + nom + "%'";
+		if (membre) {
+			requete += " membre = " + membre;
 		}
 
 		requete += " ORDER BY nom";
@@ -55,10 +56,9 @@ public class gestionArtistes {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
-		return this.tabArtiste;
 	}
 
-	public ArrayList<Album> accessTabAlbum() {
+	public void accessTabAlbum() {
 		this.tabAlbum = new ArrayList<>();
 		String requete = "SELECT * FROM Album ORDER BY titre";
 
@@ -75,7 +75,6 @@ public class gestionArtistes {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
-		return this.tabAlbum;
 	}
 
 	public void ajouterArtiste(String nom, String membre, String photoUrl) {
@@ -89,7 +88,7 @@ public class gestionArtistes {
 			System.out.println(e);
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
-		accessTabArtiste();
+		accessTabArtiste("", "", false);
 	}
 
 	public void ajouterAlbum(String titre, double prix, int genre, String anneeSortie, String maisonDistribution,
@@ -133,7 +132,7 @@ public class gestionArtistes {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
-		accessTabArtiste();
+		accessTabArtiste("", "", false);
 	}
 
 	public void supprimer(String table, int id) {
@@ -145,7 +144,7 @@ public class gestionArtistes {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
-		accessTabArtiste();
+		accessTabArtiste("", "", false);
 		accessTabAlbum();
 	}
 

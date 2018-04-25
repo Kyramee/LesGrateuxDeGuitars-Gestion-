@@ -1,18 +1,25 @@
+package vue;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import controler.controlerIndex;
 
 public class vueIndex extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	public vueIndex(JFrame parent) {
+	private final String[] nomBouton = {"Ajouter", "Modifier", "Supprimer", "Rechercher", "Quitter"};
+	private JButton[] bouton = new JButton[5];
+	
+	
+	public vueIndex(vueJFrame parent, Boolean vue) {
 		super(new GridBagLayout());
-		String[] bouton = {"Ajouter", "Modifier", "Supprimer", "Rechercher", "Quitter"};
 		
+		controlerIndex cia = new controlerIndex(parent, vue);
 		GridBagConstraints constraint = new GridBagConstraints();
 		
 		constraint.fill = GridBagConstraints.BOTH;
@@ -25,8 +32,9 @@ public class vueIndex extends JPanel {
 		constraint.gridy = 0;
 		
 		for(int i = 0; i < 5; i++) {
-			JButton b = new JButton(bouton[i]);
-			add(b, constraint);
+			this.bouton[i] = new JButton(this.nomBouton[i]);
+			this.bouton[i].addActionListener(cia);
+			this.add(this.bouton[i], constraint);
 			constraint.gridy++;
 		}
 	}

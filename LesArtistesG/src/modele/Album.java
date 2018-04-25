@@ -1,3 +1,5 @@
+package modele;
+
 
 public class Album {
 	private int id;

@@ -1,3 +1,5 @@
+package modele;
+
 
 public class Artiste {
 	private int id;
@@ -21,8 +23,11 @@ public class Artiste {
 		return this.id;
 	}
 
-	public String[] getTableInfo() {
-		String[] info = { this.id + "", this.nom, (this.membre) ? "true" : "false" };
-		return info;
+	public String getNom() {
+		return this.nom;
+	}
+	
+	public Boolean getMembre() {
+		return this.membre;
 	}
 }
