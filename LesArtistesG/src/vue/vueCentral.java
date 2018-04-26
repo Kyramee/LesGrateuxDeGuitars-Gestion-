@@ -17,7 +17,7 @@ public class vueCentral extends JPanel{
 	private modeleJTableArtiste modeleArtiste;
 	private modeleJTableAlbum modeleAlbum;
 	private vueGestionArtiste vueArtiste;
-	//private vueGestionAlbum vueAlbum;
+	private vueGestionAlbum vueAlbum;
 	private boolean vue;
 	
 	public vueCentral(Boolean vue) {
@@ -51,6 +51,9 @@ public class vueCentral extends JPanel{
 		if (vue) {
 			this.vueArtiste = new vueGestionArtiste();
 			add(this.vueArtiste, BorderLayout.NORTH);
+		} else {
+			this.vueAlbum = new vueGestionAlbum();
+			add(this.vueAlbum, BorderLayout.NORTH);
 		}
 	}
 	
@@ -64,5 +67,9 @@ public class vueCentral extends JPanel{
 	
 	public vueGestionArtiste getVueArtiste() {
 		return this.vueArtiste;
+	}
+	
+	public vueGestionAlbum getVueAlbum() {
+		return this.vueAlbum;
 	}
 }

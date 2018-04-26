@@ -38,7 +38,7 @@ public class vueIndex extends JPanel {
 		}
 	}
 	
-	public void setListener(vueJFrame parent, vueGestionArtiste vueArtiste, modeleJTableArtiste modele) {
+	public void setListenerArtiste(vueJFrame parent, vueGestionArtiste vueArtiste, modeleJTableArtiste modele) {
 		
 		for(int i = 0; i < 5; i++) {
 			this.bouton[i].addActionListener(new controlerIndexArtiste(parent, vueArtiste, modele));

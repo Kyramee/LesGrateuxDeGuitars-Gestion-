@@ -40,8 +40,10 @@ public class vueJFrame extends JFrame {
 		this.contenu.add(jp, BorderLayout.CENTER);
 		
 		if (vue) {
-			vi.setListener(this, jp.getVueArtiste(), jp.getModeleArtiste());
+			vi.setListenerArtiste(this, jp.getVueArtiste(), jp.getModeleArtiste());
 			this.contenu.add(vi, BorderLayout.WEST);
+		} else {
+			
 		}
 		
 		this.setVisible(true);

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 public class modeleJTableAlbum extends AbstractTableModel {
-
+	private static final long serialVersionUID = 1L;
 	private final String[] titreColonnes = { "Id", "Titre", "Prix", "Genre", "Date de Sortie", "Maison de distribution" };
 	private ArrayList<Album> donnes;
 
@@ -64,5 +64,19 @@ public class modeleJTableAlbum extends AbstractTableModel {
 
 	public String getColumnName(int columnIndex) {
 		return this.titreColonnes[columnIndex];
+	}
+	
+	public Album containt(int id) {
+		for (Album album : donnes) {
+			if (album.getId() == id) {
+				return album;
+			}
+		}
+		return null;
+	}
+	
+	public void setDonnees(ArrayList<Album> donnes) {
+		this.donnes = donnes;
+		fireTableDataChanged();
 	}
 }

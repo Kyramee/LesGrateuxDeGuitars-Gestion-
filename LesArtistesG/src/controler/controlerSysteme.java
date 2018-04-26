@@ -80,7 +80,27 @@ public class controlerSysteme {
 
 			while (result.next()) {
 				this.tabAlbum.add(new Album(result.getInt("id"), result.getString("titre"), result.getDouble("prix"),
-						result.getInt("genre_id"), result.getString("annee_sortie"),
+						result.getString("genre"), result.getString("annee_sortie"),
+						result.getString("maison_distribution"), result.getString("image_url"),
+						result.getInt("artiste_id")));
+			}
+			cc.closeConnexion();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void accessTabAlbum(String id, String titre, String prix, String genre, String anneeSortie,
+			String maisonDistribution, String imageUrl, String idArtiste) {
+		this.tabAlbum = new ArrayList<>();
+		String requete = "SELECT * FROM Album Where titre LIKE '%" + titre + "%' and ";
+
+		try {
+			ResultSet result = cc.executerRequete(requete);
+
+			while (result.next()) {
+				this.tabAlbum.add(new Album(result.getInt("id"), result.getString("titre"), result.getDouble("prix"),
+						result.getString("genre"), result.getString("annee_sortie"),
 						result.getString("maison_distribution"), result.getString("image_url"),
 						result.getInt("artiste_id")));
 			}
@@ -104,9 +124,9 @@ public class controlerSysteme {
 		accessTabArtiste();
 	}
 
-	public void ajouterAlbum(String titre, double prix, int genre, String anneeSortie, String maisonDistribution,
+	public void ajouterAlbum(String titre, double prix, String genre, String anneeSortie, String maisonDistribution,
 			String imageUrl, int idArtiste) {
-		String requete = "INSERT INTO `Album`(`id`, `titre`, `prix`, `genre_id`, `annee_sortie`, `maison_distribution`, `image_url`, `artiste_id`) VALUES (null, '"
+		String requete = "INSERT INTO `Album`(`id`, `titre`, `prix`, `genre`, `annee_sortie`, `maison_distribution`, `image_url`, `artiste_id`) VALUES (null, '"
 				+ titre + "', " + prix + ", " + genre + ", '" + anneeSortie + "', '" + maisonDistribution + "', '"
 				+ imageUrl + "', " + idArtiste + ")";
 
@@ -119,10 +139,10 @@ public class controlerSysteme {
 		accessTabAlbum();
 	}
 
-	public void modifierAlbum(int id, String titre, double prix, int genre, String anneeSortie,
+	public void modifierAlbum(int id, String titre, double prix, String genre, String anneeSortie,
 			String maisonDistribution, String imageUrl, int idArtiste) {
-		String requete = "UPDATE Album SET titre = '" + titre + "', prix = " + prix + ", genre_id = " + genre
-				+ ", annee_sortie = '" + anneeSortie + "', " + "maison_distribution = '" + maisonDistribution
+		String requete = "UPDATE Album SET titre = '" + titre + "', prix = " + prix + ", genre = '" + genre
+				+ "', annee_sortie = '" + anneeSortie + "', " + "maison_distribution = '" + maisonDistribution
 				+ "', image_url = '" + imageUrl + "', artiste_id = " + idArtiste + " WHERE id = " + id;
 
 		try {
@@ -186,19 +206,5 @@ public class controlerSysteme {
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
 		return ok;
-	}
-
-	public String getDescription(int index) {
-		String requete = "SELECT * FROM Genre WHERE id = " + index;
-
-		try {
-			ResultSet result = cc.executerRequete(requete);
-			requete = result.getString("description");
-			cc.closeConnexion();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
-		}
-
-		return requete;
 	}
 }

@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import modele.Artiste;
 import modele.modeleJTableArtiste;
 import vue.vueGestionArtiste;
 import vue.vueJFrame;
@@ -42,7 +41,6 @@ public class controlerIndexArtiste implements ActionListener {
 		case "Modifier":
 			if (checkId() && checkInfo()) {
 				controlerSysteme cs = new controlerSysteme();
-				Artiste temp = new Artiste(id, nom, this.vue.getRadio(0).isSelected(), url);
 				cs.modifierArtiste(id, nom, membre, url);
 				this.modele.setDonnees(cs.getTabArtiste());
 				this.vue.effacerChamp();
@@ -61,7 +59,6 @@ public class controlerIndexArtiste implements ActionListener {
 				controlerSysteme cs = new controlerSysteme();
 				cs.accessTabArtiste(this.vue.getJText(2).getText(), nom, checkMembre());
 				this.modele.setDonnees(cs.getTabArtiste());
-				this.vue.effacerChamp();
 			}
 			break;
 		case "Quitter":
@@ -94,7 +91,7 @@ public class controlerIndexArtiste implements ActionListener {
 			if (this.modele.containt(Integer.parseInt(this.vue.getJText(2).getText())) != null) {
 				this.vue.setErreur(0, "");
 			} else {
-				this.vue.setErreur(0, "Le id doit n'est pas valide");
+				this.vue.setErreur(0, "Le id n'est pas valide");
 				ok = false;
 			}
 		} else {
@@ -129,7 +126,7 @@ public class controlerIndexArtiste implements ActionListener {
 			this.vue.setErreur(3, "Remplir le champ");
 			ok = false;
 		} else if (this.vue.getJText(1).getText().length() > 255) {
-			this.vue.setErreur(3, "Le nom doit avoir moins de 255 caract\u00E8");
+			this.vue.setErreur(3, "L'url doit avoir moins de 255 caract\u00E8");
 			ok = false;
 		} else {
 			this.vue.setErreur(3, "");
