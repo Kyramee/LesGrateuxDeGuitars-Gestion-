@@ -23,7 +23,6 @@ public class controlerIndexArtiste implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int id = (this.vue.getJText(2).getText().isEmpty()) ? 0 : Integer.parseInt(this.vue.getJText(2).getText());
 		String nom = this.vue.getJText(0).getText();
 		String membre = this.vue.getRadio(0).isSelected() ? "true" : "false";
 		String url = this.vue.getJText(1).getText();
@@ -41,7 +40,7 @@ public class controlerIndexArtiste implements ActionListener {
 		case "Modifier":
 			if (checkId() && checkInfo()) {
 				controlerSysteme cs = new controlerSysteme();
-				cs.modifierArtiste(id, nom, membre, url);
+				cs.modifierArtiste(Integer.parseInt(this.vue.getJText(2).getText()), nom, membre, url);
 				this.modele.setDonnees(cs.getTabArtiste());
 				this.vue.effacerChamp();
 			}
@@ -49,7 +48,7 @@ public class controlerIndexArtiste implements ActionListener {
 		case "Supprimer":
 			if (checkId()) {
 				controlerSysteme cs = new controlerSysteme();
-				cs.supprimer("Artiste", id);
+				cs.supprimer("Artiste", Integer.parseInt(this.vue.getJText(2).getText()));
 				this.modele.setDonnees(cs.getTabArtiste());
 				this.vue.effacerChamp();
 			}

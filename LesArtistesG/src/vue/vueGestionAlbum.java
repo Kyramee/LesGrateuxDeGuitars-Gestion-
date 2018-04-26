@@ -36,14 +36,22 @@ public class vueGestionAlbum extends JPanel {
 			this.etiquette[i] = new JLabel(nomEtiquette[i]);
 			this.erreur[i] = new JLabel("");
 			this.erreur[i].setForeground(Color.RED);
-			this.jText[i] = new JTextField();
-
+			
 			add(this.etiquette[i], constraint);
-			constraint.gridx++;
-			add(this.jText[i], constraint);
-			constraint.gridx++;
+			constraint.gridx = 2;
 			add(this.erreur[i], constraint);
 			constraint.gridx = 0;
+			constraint.gridy++;
+		}
+		
+		constraint.fill = GridBagConstraints.HORIZONTAL;
+		constraint.gridx = 1;
+		constraint.gridy = 0;
+		
+		for (int i = 0; i < this.nomEtiquette.length; i++) {
+			this.jText[i] = new JTextField();
+			
+			add(this.jText[i], constraint);
 			constraint.gridy++;
 		}
 	}

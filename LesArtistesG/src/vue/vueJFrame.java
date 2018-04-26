@@ -32,7 +32,7 @@ public class vueJFrame extends JFrame {
 		this.setSize(750, 450);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("LesArtistesG - Gestion des" + ((vue) ? "artistes" : "albumms"));
+		setTitle("LesArtistesG - Gestion des " + ((vue) ? "artistes" : "albums"));
 		
 		vueCentral jp = new vueCentral(vue);
 		vueIndex vi = new vueIndex();
@@ -43,7 +43,8 @@ public class vueJFrame extends JFrame {
 			vi.setListenerArtiste(this, jp.getVueArtiste(), jp.getModeleArtiste());
 			this.contenu.add(vi, BorderLayout.WEST);
 		} else {
-			
+			vi.setListenerAlbum(this, jp.getVueAlbum(), jp.getModeleAlbum());
+			this.contenu.add(vi, BorderLayout.WEST);
 		}
 		
 		this.setVisible(true);

@@ -72,29 +72,31 @@ public class controlerSysteme {
 	}
 
 	public void accessTabAlbum() {
-		this.tabAlbum = new ArrayList<>();
-		String requete = "SELECT * FROM Album ORDER BY titre";
-
-		try {
-			ResultSet result = cc.executerRequete(requete);
-
-			while (result.next()) {
-				this.tabAlbum.add(new Album(result.getInt("id"), result.getString("titre"), result.getDouble("prix"),
-						result.getString("genre"), result.getString("annee_sortie"),
-						result.getString("maison_distribution"), result.getString("image_url"),
-						result.getInt("artiste_id")));
-			}
-			cc.closeConnexion();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
-		}
+		accessTabAlbum("SELECT * FROM Album ORDER BY titre");
 	}
-	
+
 	public void accessTabAlbum(String id, String titre, String prix, String genre, String anneeSortie,
 			String maisonDistribution, String imageUrl, String idArtiste) {
+		String requete = "SELECT * FROM Album Where titre LIKE '%" + titre + "%' AND genre LIKE '%" + genre
+				+ "%' AND maison_distribution LIKE '%" + maisonDistribution + "%' AND image_url LIKE '%" + imageUrl + "%'";
+		
+		if (!id.isEmpty()) {
+			requete += " AND id = " + id;
+		}
+		
+		if (!idArtiste.isEmpty()) {
+			requete += " AND artiste_id = " + idArtiste;
+		}
+		
+		if (!prix.isEmpty()) {
+			requete += " AND prix = " + prix;
+		}
+		accessTabAlbum(requete + " ORDER BY titre");
+	}
+	
+	private void accessTabAlbum(String requete) {
 		this.tabAlbum = new ArrayList<>();
-		String requete = "SELECT * FROM Album Where titre LIKE '%" + titre + "%' and ";
-
+		
 		try {
 			ResultSet result = cc.executerRequete(requete);
 
@@ -177,7 +179,7 @@ public class controlerSysteme {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Le id n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
-		
+
 		if (table.equals("Artiste")) {
 			accessTabArtiste();
 		} else {
