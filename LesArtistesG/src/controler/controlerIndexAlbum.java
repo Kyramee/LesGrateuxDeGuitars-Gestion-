@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import modele.modeleJTableAlbum;
 import vue.vueGestionAlbum;
@@ -23,48 +24,27 @@ public class controlerIndexAlbum implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		String id = this.vue.getJText(0).getText();
 		String titre = this.vue.getJText(1).getText();
-		double prix = (this.vue.getJText(2).getText().isEmpty()) ? 0
-				: Double.parseDouble(this.vue.getJText(2).getText());
+		String prix = this.vue.getJText(2).getText();
 		String genre = this.vue.getJText(3).getText();
 		String anneeSortie = this.vue.getJText(4).getText();
 		String maisonDistribution = this.vue.getJText(5).getText();
 		String imageUrl = this.vue.getJText(6).getText();
+		String artisteId = this.vue.getJText(7).getText();
 
 		switch (((JButton) e.getSource()).getText()) {
 		case "Ajouter":
-			if (checkInfo()) {
-				controlerSysteme cs = new controlerSysteme();
-				cs.ajouterAlbum(titre, prix, genre, anneeSortie, maisonDistribution, imageUrl,
-						Integer.parseInt(this.vue.getJText(0).getText()));
-				this.modele.setDonnees(cs.getTabAlbum());
-				this.vue.effacerChamp();
-			}
+			ajouter(titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
 			break;
 		case "Modifier":
-			if (checkId() && checkInfo()) {
-				controlerSysteme cs = new controlerSysteme();
-				cs.modifierAlbum(Integer.parseInt(this.vue.getJText(0).getText()), titre, prix, genre, anneeSortie,
-						maisonDistribution, imageUrl, Integer.parseInt(this.vue.getJText(0).getText()));
-				this.modele.setDonnees(cs.getTabAlbum());
-				this.vue.effacerChamp();
-			}
+			modifier(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
 			break;
 		case "Supprimer":
-			if (checkId()) {
-				controlerSysteme cs = new controlerSysteme();
-				cs.supprimer("Album", Integer.parseInt(this.vue.getJText(0).getText()));
-				this.modele.setDonnees(cs.getTabAlbum());
-				this.vue.effacerChamp();
-			}
+			supprimer(id);
 			break;
 		case "Rechercher":
-			if (checkNumber()) {
-				controlerSysteme cs = new controlerSysteme();
-				cs.accessTabAlbum(this.vue.getJText(0).getText(), titre, this.vue.getJText(2).getText(), genre,
-						anneeSortie, maisonDistribution, imageUrl, this.vue.getJText(0).getText());
-				this.modele.setDonnees(cs.getTabAlbum());
-			}
+			rechercher(id, titre, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
 			break;
 		case "Quitter":
 			vueJFrame vf = new vueJFrame();
@@ -73,7 +53,56 @@ public class controlerIndexAlbum implements ActionListener {
 		}
 	}
 
-	public boolean checkNumber() {
+	private void rechercher(String id, String titre, String genre, String anneeSortie, String maisonDistribution,
+			String imageUrl, String artisteId) {
+		if (checkNumber()) {
+			controlerSysteme cs = new controlerSysteme();
+			cs.accessTabAlbum(id, titre, this.vue.getJText(2).getText(), genre, anneeSortie, maisonDistribution,
+					imageUrl, artisteId);
+			this.modele.setDonnees(cs.getTabAlbum());
+		}
+	}
+
+	private void supprimer(String id) {
+		if (checkId()) {
+			if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(parent,
+					"Voulez-vous supprimer l'album avec l'id " + id + "?", "Confirmation supprimer",
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE)) {
+
+				controlerSysteme cs = new controlerSysteme();
+				cs.supprimer("Album", Integer.parseInt(this.vue.getJText(0).getText()));
+				this.modele.setDonnees(cs.getTabAlbum());
+				this.vue.effacerChamp();
+			}
+		}
+	}
+
+	private void modifier(String id, String titre, String prix, String genre, String anneeSortie,
+			String maisonDistribution, String imageUrl, String artisteId) {
+		if (checkId() && checkInfo()) {
+			controlerSysteme cs = new controlerSysteme();
+			cs.modifierAlbum(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
+			this.vue.effacerChamp();
+		}
+	}
+
+	private void ajouter(String titre, String prix, String genre, String anneeSortie, String maisonDistribution,
+			String imageUrl, String artisteId) {
+		if (checkInfo()) {
+			controlerSysteme cs = new controlerSysteme();
+			if (cs.containtAlbum(titre)) {
+				JOptionPane.showMessageDialog(parent, "L'album " + titre + " est d\u00E9j\u00E0 pr\u00E9sent", "Erreur",
+						JOptionPane.ERROR_MESSAGE);
+			} else {
+				cs.ajouterAlbum(titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
+				this.modele.setDonnees(cs.getTabAlbum());
+				this.vue.effacerChamp();
+			}
+
+		}
+	}
+
+	private boolean checkNumber() {
 		Boolean ok = true;
 
 		if (this.vue.getJText(2).getText().matches("^[0-9]*$")) {
@@ -86,7 +115,7 @@ public class controlerIndexAlbum implements ActionListener {
 		return ok;
 	}
 
-	public boolean checkId() {
+	private boolean checkId() {
 		Boolean ok = true;
 
 		if (this.vue.getJText(0).getText().isEmpty()) {
@@ -111,79 +140,24 @@ public class controlerIndexAlbum implements ActionListener {
 		Boolean ok = true;
 		int index = 1;
 
-		if (this.vue.getJText(index).getText().isEmpty()) {
-			this.vue.setErreur(index, "Remplir le champ");
-			ok = false;
-		} else if (this.vue.getJText(index).getText().length() > 30) {
-			this.vue.setErreur(index, "Le titre doit avoir moins de 30 caract\u00E8re");
-			ok = false;
-		} else {
-			this.vue.setErreur(index, "");
-		}
+		ok = checkTitre(ok, index++);
 
-		index++;
+		ok = checkPrix(ok, index++);
 
-		if (this.vue.getJText(index).getText().isEmpty()) {
-			this.vue.setErreur(index, "Remplir le champ");
-			ok = false;
-		} else if (this.vue.getJText(index).getText().matches("^\\d+(\\.\\d{1,2})$")) {
-			this.vue.setErreur(index, "Le champ doit \u00EAtre du format 0.00");
-			ok = false;
-		} else {
-			this.vue.setErreur(index, "");
-		}
+		ok = checkGenre(ok, index++);
 
-		index++;
+		ok = checkDate(ok, index++);
 
-		if (this.vue.getJText(index).getText().isEmpty()) {
-			this.vue.setErreur(index, "Remplir le champ");
-			ok = false;
-		} else if (this.vue.getJText(index).getText().length() > 30) {
-			this.vue.setErreur(index, "Le genre doit avoir moins de 30 caract\u00E8re");
-			ok = false;
-		} else {
-			this.vue.setErreur(index, "");
-		}
+		ok = checkMaison(ok, index++);
 
-		index++;
+		ok = checkUrl(ok, index++);
 
-		if (this.vue.getJText(index).getText().isEmpty()) {
-			this.vue.setErreur(index, "Remplir le champ");
-			ok = false;
-		} else if (this.vue.getJText(index).getText()
-				.matches("^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$")) {
-			this.vue.setErreur(index, "La date doit \u00EAtre valide du format 9999-99-99");
-			ok = false;
-		} else {
-			this.vue.setErreur(index, "");
-		}
+		ok = checkArtisteId(ok, index);
 
-		index++;
+		return ok;
+	}
 
-		if (this.vue.getJText(index).getText().isEmpty()) {
-			this.vue.setErreur(index, "Remplir le champ");
-			ok = false;
-		} else if (this.vue.getJText(index).getText().length() > 30) {
-			this.vue.setErreur(index, "La maison de distribution doit avoir moins de 30 caract\u00E8re");
-			ok = false;
-		} else {
-			this.vue.setErreur(index, "");
-		}
-
-		index++;
-
-		if (this.vue.getJText(index).getText().isEmpty()) {
-			this.vue.setErreur(index, "Remplir le champ");
-			ok = false;
-		} else if (this.vue.getJText(index).getText().length() > 30) {
-			this.vue.setErreur(index, "L'url doit avoir moins de 255 caract\\u00E8");
-			ok = false;
-		} else {
-			this.vue.setErreur(index, "");
-		}
-
-		index++;
-
+	private Boolean checkArtisteId(Boolean ok, int index) {
 		if (this.vue.getJText(index).getText().isEmpty()) {
 			this.vue.setErreur(index, "Remplir le champ");
 			ok = false;
@@ -200,7 +174,85 @@ public class controlerIndexAlbum implements ActionListener {
 			this.vue.setErreur(index, "Le id doit \u00EAtre un nombre");
 			ok = false;
 		}
+		return ok;
+	}
 
+	private Boolean checkUrl(Boolean ok, int index) {
+		if (this.vue.getJText(index).getText().isEmpty()) {
+			this.vue.setErreur(index, "Remplir le champ");
+			ok = false;
+		} else if (this.vue.getJText(index).getText().length() > 30) {
+			this.vue.setErreur(index, "L'url doit avoir moins de 255 caract\\u00E8");
+			ok = false;
+		} else {
+			this.vue.setErreur(index, "");
+		}
+		return ok;
+	}
+
+	private Boolean checkMaison(Boolean ok, int index) {
+		if (this.vue.getJText(index).getText().isEmpty()) {
+			this.vue.setErreur(index, "Remplir le champ");
+			ok = false;
+		} else if (this.vue.getJText(index).getText().length() > 30) {
+			this.vue.setErreur(index, "La maison de distribution doit avoir moins de 30 caract\u00E8re");
+			ok = false;
+		} else {
+			this.vue.setErreur(index, "");
+		}
+		return ok;
+	}
+
+	private Boolean checkDate(Boolean ok, int index) {
+		if (this.vue.getJText(index).getText().isEmpty()) {
+			this.vue.setErreur(index, "Remplir le champ");
+			ok = false;
+		} else if (this.vue.getJText(index).getText()
+				.matches("^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$")) {
+			this.vue.setErreur(index, "La date doit \u00EAtre valide du format 9999-99-99");
+			ok = false;
+		} else {
+			this.vue.setErreur(index, "");
+		}
+		return ok;
+	}
+
+	private Boolean checkGenre(Boolean ok, int index) {
+		if (this.vue.getJText(index).getText().isEmpty()) {
+			this.vue.setErreur(index, "Remplir le champ");
+			ok = false;
+		} else if (this.vue.getJText(index).getText().length() > 30) {
+			this.vue.setErreur(index, "Le genre doit avoir moins de 30 caract\u00E8re");
+			ok = false;
+		} else {
+			this.vue.setErreur(index, "");
+		}
+		return ok;
+	}
+
+	private Boolean checkPrix(Boolean ok, int index) {
+		if (this.vue.getJText(index).getText().isEmpty()) {
+			this.vue.setErreur(index, "Remplir le champ");
+			ok = false;
+		} else if (this.vue.getJText(index).getText().matches("^\\d+(\\.\\d{1,2})$")) {
+			this.vue.setErreur(index, "Le champ doit \u00EAtre du format 0.00");
+			ok = false;
+		} else {
+			this.vue.setErreur(index, "");
+		}
+		return ok;
+	}
+
+	private Boolean checkTitre(Boolean ok, int index) {
+		if (this.vue.getJText(index).getText().isEmpty()) {
+			this.vue.setErreur(index, "Remplir le champ");
+			ok = false;
+		} else if (this.vue.getJText(index).getText().length() > 30) {
+			this.vue.setErreur(index, "Le titre doit avoir moins de 30 caract\u00E8re");
+			ok = false;
+		} else {
+			this.vue.setErreur(index, "");
+		}
 		return ok;
 	}
 }

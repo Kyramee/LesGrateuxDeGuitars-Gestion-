@@ -14,9 +14,9 @@ public class modeleJTableArtiste extends AbstractTableModel {
 		this.donnes = donnes;
 	}
 	
-	public Artiste containt(int id) {
+	public Artiste containt(String id) {
 		for (Artiste artiste : donnes) {
-			if (artiste.getId() == id) {
+			if (artiste.getId() == Integer.parseInt(id)) {
 				return artiste;
 			}
 		}

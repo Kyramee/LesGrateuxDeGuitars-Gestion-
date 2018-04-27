@@ -78,25 +78,26 @@ public class controlerSysteme {
 	public void accessTabAlbum(String id, String titre, String prix, String genre, String anneeSortie,
 			String maisonDistribution, String imageUrl, String idArtiste) {
 		String requete = "SELECT * FROM Album Where titre LIKE '%" + titre + "%' AND genre LIKE '%" + genre
-				+ "%' AND maison_distribution LIKE '%" + maisonDistribution + "%' AND image_url LIKE '%" + imageUrl + "%'";
-		
+				+ "%' AND maison_distribution LIKE '%" + maisonDistribution + "%' AND image_url LIKE '%" + imageUrl
+				+ "%'";
+
 		if (!id.isEmpty()) {
 			requete += " AND id = " + id;
 		}
-		
+
 		if (!idArtiste.isEmpty()) {
 			requete += " AND artiste_id = " + idArtiste;
 		}
-		
+
 		if (!prix.isEmpty()) {
 			requete += " AND prix = " + prix;
 		}
 		accessTabAlbum(requete + " ORDER BY titre");
 	}
-	
+
 	private void accessTabAlbum(String requete) {
 		this.tabAlbum = new ArrayList<>();
-		
+
 		try {
 			ResultSet result = cc.executerRequete(requete);
 
@@ -126,8 +127,8 @@ public class controlerSysteme {
 		accessTabArtiste();
 	}
 
-	public void ajouterAlbum(String titre, double prix, String genre, String anneeSortie, String maisonDistribution,
-			String imageUrl, int idArtiste) {
+	public void ajouterAlbum(String titre, String prix, String genre, String anneeSortie, String maisonDistribution,
+			String imageUrl, String idArtiste) {
 		String requete = "INSERT INTO `Album`(`id`, `titre`, `prix`, `genre`, `annee_sortie`, `maison_distribution`, `image_url`, `artiste_id`) VALUES (null, '"
 				+ titre + "', " + prix + ", " + genre + ", '" + anneeSortie + "', '" + maisonDistribution + "', '"
 				+ imageUrl + "', " + idArtiste + ")";
@@ -141,8 +142,8 @@ public class controlerSysteme {
 		accessTabAlbum();
 	}
 
-	public void modifierAlbum(int id, String titre, double prix, String genre, String anneeSortie,
-			String maisonDistribution, String imageUrl, int idArtiste) {
+	public void modifierAlbum(String id, String titre, String prix, String genre, String anneeSortie,
+			String maisonDistribution, String imageUrl, String idArtiste) {
 		String requete = "UPDATE Album SET titre = '" + titre + "', prix = " + prix + ", genre = '" + genre
 				+ "', annee_sortie = '" + anneeSortie + "', " + "maison_distribution = '" + maisonDistribution
 				+ "', image_url = '" + imageUrl + "', artiste_id = " + idArtiste + " WHERE id = " + id;
@@ -156,7 +157,7 @@ public class controlerSysteme {
 		accessTabAlbum();
 	}
 
-	public void modifierArtiste(int id, String nom, String membre, String photoUrl) {
+	public void modifierArtiste(String id, String nom, String membre, String photoUrl) {
 		String requete = "UPDATE Artiste SET nom = '" + nom + "', membre = " + membre + ", photo_url = '" + photoUrl
 				+ "' WHERE id = " + id;
 
@@ -209,22 +210,59 @@ public class controlerSysteme {
 		}
 		return ok;
 	}
-	
+
 	public boolean containtArtiste(String nom) {
 		boolean ok = false;
-		
+
 		try {
 			ResultSet result = cc.executerRequete("SELECT * FROM Artiste WHERE nom LIKE '" + nom + "'");
 
 			if (result.next()) {
 				ok = true;
 			}
-			
+
 			cc.closeConnexion();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
-		
+
+		return ok;
+	}
+	
+	public boolean containtAlbum(String titre) {
+		boolean ok = false;
+
+		try {
+			ResultSet result = cc.executerRequete("SELECT * FROM Album WHERE titre LIKE '" + titre + "'");
+
+			if (result.next()) {
+				ok = true;
+			}
+
+			cc.closeConnexion();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+
+		return ok;
+	}
+
+	public boolean hasAlbum(String id) {
+		boolean ok = false;
+
+		try {
+			ResultSet result = cc.executerRequete("SELECT Album.* FROM Artiste, Album WHERE Album.artiste_id = Artiste.id and Artiste.id = " + id);
+
+			if (result.next()) {
+				ok = true;
+				System.out.println("here");
+			}
+
+			cc.closeConnexion();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+
 		return ok;
 	}
 }
