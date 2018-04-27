@@ -8,6 +8,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import controler.controlerSysteme;
+import modele.modeleColonneId;
+import modele.modeleColonneMembre;
 import modele.modeleJTableAlbum;
 import modele.modeleJTableArtiste;
 
@@ -35,9 +37,12 @@ public class vueCentral extends JPanel{
 		if(vue) {
 			modeleArtiste = new modeleJTableArtiste(ga.getTabArtiste());
 			table = new JTable(modeleArtiste);
+			table.getColumnModel().getColumn(0).setCellRenderer(new modeleColonneId());
+			table.getColumnModel().getColumn(2).setCellRenderer(new modeleColonneMembre());
 		} else {
 			modeleAlbum = new modeleJTableAlbum(ga.getTabAlbum());
 			table = new JTable(modeleAlbum);
+			table.getColumnModel().getColumn(0).setCellRenderer(new modeleColonneId());
 		}
 		
 		

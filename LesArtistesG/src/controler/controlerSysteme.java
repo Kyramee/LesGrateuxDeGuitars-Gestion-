@@ -209,4 +209,22 @@ public class controlerSysteme {
 		}
 		return ok;
 	}
+	
+	public boolean containtArtiste(String nom) {
+		boolean ok = false;
+		
+		try {
+			ResultSet result = cc.executerRequete("SELECT * FROM Artiste WHERE nom LIKE '" + nom + "'");
+
+			if (result.next()) {
+				ok = true;
+			}
+			
+			cc.closeConnexion();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		return ok;
+	}
 }

@@ -1,9 +1,12 @@
 package controler;
 
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import modele.modeleJTableArtiste;
 import vue.vueGestionArtiste;
@@ -32,9 +35,18 @@ public class controlerIndexArtiste implements ActionListener {
 		case "Ajouter":
 			if (checkInfo()) {
 				controlerSysteme cs = new controlerSysteme();
-				cs.ajouterArtiste(nom, membre, url);
-				this.modele.setDonnees(cs.getTabArtiste());
-				this.vue.effacerChamp();
+				if (cs.containtArtiste(nom)) {
+					JOptionPane.showMessageDialog(parent, "L'artiste " + nom + " est d\u00E9j\u00E0 pr\u00E9sent",
+							"Erreur", JOptionPane.ERROR_MESSAGE);
+				} else {
+					if (JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(parent,
+						"Voulez-vous ajouter l'artiste " + nom + "?", "Confirmation ajout",
+						JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION)) {
+						cs.ajouterArtiste(nom, membre, url);
+						this.modele.setDonnees(cs.getTabArtiste());
+						this.vue.effacerChamp();
+					}
+				}
 			}
 			break;
 		case "Modifier":
@@ -47,10 +59,17 @@ public class controlerIndexArtiste implements ActionListener {
 			break;
 		case "Supprimer":
 			if (checkId()) {
-				controlerSysteme cs = new controlerSysteme();
-				cs.supprimer("Artiste", Integer.parseInt(this.vue.getJText(2).getText()));
-				this.modele.setDonnees(cs.getTabArtiste());
-				this.vue.effacerChamp();
+				if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(parent,
+						"Voulez-vous supprimer l'artiste?", "Confirmation ajout",
+						JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION)) {
+
+					controlerSysteme cs = new controlerSysteme();
+					
+					
+					cs.supprimer("Artiste", Integer.parseInt(this.vue.getJText(2).getText()));
+					this.modele.setDonnees(cs.getTabArtiste());
+					this.vue.effacerChamp();
+				}
 			}
 			break;
 		case "Rechercher":
@@ -58,6 +77,11 @@ public class controlerIndexArtiste implements ActionListener {
 				controlerSysteme cs = new controlerSysteme();
 				cs.accessTabArtiste(this.vue.getJText(2).getText(), nom, checkMembre());
 				this.modele.setDonnees(cs.getTabArtiste());
+				
+				if (cs.getTabArtiste().isEmpty()) {
+					JOptionPane.showMessageDialog(parent, "Aucun ne artiste concorde avec vos param\u00EAtres de recherche",
+							"Erreur", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			break;
 		case "Quitter":
