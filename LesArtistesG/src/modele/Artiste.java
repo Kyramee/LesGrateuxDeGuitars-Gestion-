@@ -2,19 +2,19 @@ package modele;
 
 
 public class Artiste {
-	private int id;
+	private String id;
 	private String nom;
 	private boolean membre;
 	private String photoUrl;
 
-	public Artiste(int id, String nom, boolean membre, String photoUrl) {
+	public Artiste(String id, String nom, boolean membre, String photoUrl) {
 		this.id = id;
 		this.nom = nom;
 		this.membre = membre;
 		this.photoUrl = photoUrl;
 	}
 
-	public int getId() {
+	public String getId() {
 		return this.id;
 	}
 
@@ -24,5 +24,17 @@ public class Artiste {
 	
 	public Boolean getMembre() {
 		return this.membre;
+	}
+	
+	public String getUrl() {
+		return this.photoUrl;
+	}
+	
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	
+	public void setMembre(Boolean membre) {
+		this.membre = membre;
 	}
 }

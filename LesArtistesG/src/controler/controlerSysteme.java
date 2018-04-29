@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import modele.Album;
 import modele.Artiste;
@@ -60,7 +61,7 @@ public class controlerSysteme {
 			ResultSet result = cc.executerRequete(requete);
 
 			while (result.next()) {
-				this.tabArtiste.add(new Artiste(result.getInt("id"), result.getString("nom"),
+				this.tabArtiste.add(new Artiste(result.getString("id"), result.getString("nom"),
 						result.getBoolean("membre"), result.getString("photo_url")));
 				obtenirLastInt(result.getInt("id"));
 			}
@@ -130,7 +131,7 @@ public class controlerSysteme {
 	public void ajouterAlbum(String titre, String prix, String genre, String anneeSortie, String maisonDistribution,
 			String imageUrl, String idArtiste) {
 		String requete = "INSERT INTO `Album`(`id`, `titre`, `prix`, `genre`, `annee_sortie`, `maison_distribution`, `image_url`, `artiste_id`) VALUES (null, '"
-				+ titre + "', " + prix + ", " + genre + ", '" + anneeSortie + "', '" + maisonDistribution + "', '"
+				+ titre + "', " + prix + ", '" + genre + "', '" + anneeSortie + "', '" + maisonDistribution + "', '"
 				+ imageUrl + "', " + idArtiste + ")";
 
 		try {
@@ -162,7 +163,30 @@ public class controlerSysteme {
 				+ "' WHERE id = " + id;
 
 		try {
+			cc.update(requete);
+			cc.closeConnexion();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Le id n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+		accessTabArtiste();
+	}
 
+	public void modifierArtisteNom(String id, String nom) {
+		String requete = "UPDATE Artiste SET nom = '" + nom + "' WHERE id = " + id;
+
+		try {
+			cc.update(requete);
+			cc.closeConnexion();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Le id n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+		accessTabArtiste();
+	}
+	
+	public void modifierArtisteMembre(String id, Boolean membre) {
+		String requete = "UPDATE Artiste SET membre = " + membre + " WHERE id = " + id;
+
+		try {
 			cc.update(requete);
 			cc.closeConnexion();
 		} catch (Exception e) {
@@ -228,7 +252,7 @@ public class controlerSysteme {
 
 		return ok;
 	}
-	
+
 	public boolean containtAlbum(String titre) {
 		boolean ok = false;
 
@@ -247,22 +271,24 @@ public class controlerSysteme {
 		return ok;
 	}
 
-	public boolean hasAlbum(String id) {
-		boolean ok = false;
+	public ArrayList<Album> hasAlbum(String id) {
+		this.tabAlbum.clear();
 
 		try {
-			ResultSet result = cc.executerRequete("SELECT Album.* FROM Artiste, Album WHERE Album.artiste_id = Artiste.id and Artiste.id = " + id);
+			ResultSet result = cc.executerRequete("SELECT Album.* FROM Artiste, Album WHERE Artiste.id = " + id
+					+ " AND Album.artiste_id = Artiste.id");
 
-			if (result.next()) {
-				ok = true;
-				System.out.println("here");
+			while (result.next()) {
+				this.tabAlbum.add(new Album(result.getInt("id"), result.getString("titre"), result.getDouble("prix"),
+						result.getString("genre"), result.getString("annee_sortie"),
+						result.getString("maison_distribution"), result.getString("image_url"),
+						result.getInt("artiste_id")));
 			}
-
 			cc.closeConnexion();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erreur: " + e, "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
 
-		return ok;
+		return this.tabAlbum;
 	}
 }

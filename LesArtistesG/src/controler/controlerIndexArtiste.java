@@ -67,10 +67,10 @@ public class controlerIndexArtiste implements ActionListener {
 		if (checkId(id)) {
 			if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(parent,
 					"Voulez-vous supprimer l'artiste avec l'id " + id + "?", "Confirmation supprimer",
-					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE)) {
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)) {
 
 				controlerSysteme cs = new controlerSysteme();
-				if (cs.hasAlbum(id)) {
+				if (cs.hasAlbum(id).isEmpty()) {
 					JOptionPane.showMessageDialog(parent,
 							"L'artiste " + nom + " est assossi\u00E9 \u00E0 un ou plusieurs albums", "Erreur",
 							JOptionPane.ERROR_MESSAGE);
@@ -99,9 +99,9 @@ public class controlerIndexArtiste implements ActionListener {
 				JOptionPane.showMessageDialog(parent, "L'artiste " + nom + " est d\u00E9j\u00E0 pr\u00E9sent", "Erreur",
 						JOptionPane.ERROR_MESSAGE);
 			} else {
-				if (JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(parent,
+				if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(parent,
 						"Voulez-vous ajouter l'artiste " + nom + "?", "Confirmation ajout",
-						JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION)) {
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)) {
 					cs.ajouterArtiste(nom, membre, url);
 					this.modele.setDonnees(cs.getTabArtiste());
 					this.vue.effacerChamp();
@@ -110,7 +110,7 @@ public class controlerIndexArtiste implements ActionListener {
 		}
 	}
 
-	public boolean checkNumber(String id) {
+	private boolean checkNumber(String id) {
 		Boolean ok = true;
 
 		if (id.matches("^[0-9]*$")) {
@@ -123,7 +123,7 @@ public class controlerIndexArtiste implements ActionListener {
 		return ok;
 	}
 
-	public boolean checkId(String id) {
+	private boolean checkId(String id) {
 		Boolean ok = true;
 
 		if (id.isEmpty()) {
@@ -177,7 +177,7 @@ public class controlerIndexArtiste implements ActionListener {
 		return ok;
 	}
 
-	public int checkMembre() {
+	private int checkMembre() {
 		if (this.vue.getRadio(0).isSelected()) {
 			return 0;
 		} else if (this.vue.getRadio(1).isSelected()) {

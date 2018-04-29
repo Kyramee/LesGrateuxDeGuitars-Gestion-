@@ -14,9 +14,8 @@ public class vueJFrame extends JFrame {
 	public vueJFrame() {
 		this.setResizable(true);
 		this.contenu = getContentPane();
-		// ImageIcon iconeFenetre = new
-		// ImageIcon(getClass().getResource("images/grateux.png"));
-		// this.setIconImage(iconeFenetre.getImage());
+		ImageIcon iconeFenetre = new ImageIcon(getClass().getResource("../images/membre.png"));
+		this.setIconImage(iconeFenetre.getImage());
 	}
 
 	public void init() {

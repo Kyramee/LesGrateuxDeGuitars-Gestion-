@@ -1,24 +1,36 @@
 package vue;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+
+import controler.controlerSysteme;
+import modele.Album;
+import modele.modeleSmallJTableAlbum;
 
 public class vueGestionArtiste extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private String[] nomEtiquette = { "Id", "Nom", "Membre", "Url de la photo" };
+	private String[] nomEtiquette = { "Id", "Nom", "Membre", "Url de la photo", "Photo et album" };
 	private String[] nomRadio = { "Oui", "Non" };
-
+	
+	private JLabel photo;
+	private modeleSmallJTableAlbum album;
+	
 	private JLabel[] etiquette = new JLabel[nomEtiquette.length];
-	private JLabel[] erreur = new JLabel[nomEtiquette.length];
+	private JLabel[] erreur = new JLabel[nomEtiquette.length - 1];
 	private JTextField[] jText = new JTextField[3];
 	private JRadioButton[] jRadio = new JRadioButton[2];
 
@@ -76,6 +88,21 @@ public class vueGestionArtiste extends JPanel {
 		this.jText[2] = new JTextField();
 		constraint.gridy = 0;
 		add(this.jText[2], constraint);
+		
+		this.photo = new JLabel("");
+		constraint.gridx = 1;
+		constraint.gridy = 4;
+		add(this.photo, constraint);
+		
+		constraint.gridx = 3;
+		constraint.fill = GridBagConstraints.NONE;
+		
+		controlerSysteme cs = new controlerSysteme();
+		this.album = new modeleSmallJTableAlbum(cs.getTabAlbum());
+		JScrollPane sp = new JScrollPane(new JTable(this.album));
+		sp.setPreferredSize(new Dimension(200, 80));
+		
+		add(sp, constraint);
 	}
 
 	public void setErreur(int index, String erreur) {
@@ -106,5 +133,18 @@ public class vueGestionArtiste extends JPanel {
 		for (JLabel erreur : erreur) {
 			erreur.setText("");
 		}
+	}
+	public void setPhoto(String url) {
+		try {
+			this.photo.setIcon(new ImageIcon(getClass().getResource("../images/" + url)));
+		} catch (Exception e) {
+			this.photo.setIcon(new ImageIcon(getClass().getResource("../images/erreur.jpeg")));
+		}
+		
+	}
+	
+	
+	public void setDonnesAlbum(ArrayList<Album> donnes) {
+		this.album.setDonnees(donnes);
 	}
 }

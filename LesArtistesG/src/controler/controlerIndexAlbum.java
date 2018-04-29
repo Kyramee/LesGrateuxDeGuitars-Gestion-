@@ -32,6 +32,8 @@ public class controlerIndexAlbum implements ActionListener {
 		String maisonDistribution = this.vue.getJText(5).getText();
 		String imageUrl = this.vue.getJText(6).getText();
 		String artisteId = this.vue.getJText(7).getText();
+		
+		this.vue.effacerErreur();
 
 		switch (((JButton) e.getSource()).getText()) {
 		case "Ajouter":
@@ -44,7 +46,7 @@ public class controlerIndexAlbum implements ActionListener {
 			supprimer(id);
 			break;
 		case "Rechercher":
-			rechercher(id, titre, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
+			rechercher(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
 			break;
 		case "Quitter":
 			vueJFrame vf = new vueJFrame();
@@ -53,18 +55,19 @@ public class controlerIndexAlbum implements ActionListener {
 		}
 	}
 
-	private void rechercher(String id, String titre, String genre, String anneeSortie, String maisonDistribution,
-			String imageUrl, String artisteId) {
-		if (checkNumber()) {
+	private void rechercher(String id, String titre, String prix, String genre, String anneeSortie,
+			String maisonDistribution, String imageUrl, String artisteId) {
+		if (checkNumber(id, prix)) {
+			System.out.println("ok");
 			controlerSysteme cs = new controlerSysteme();
-			cs.accessTabAlbum(id, titre, this.vue.getJText(2).getText(), genre, anneeSortie, maisonDistribution,
-					imageUrl, artisteId);
+			cs.accessTabAlbum(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
 			this.modele.setDonnees(cs.getTabAlbum());
+			this.vue.effacerErreur();
 		}
 	}
 
 	private void supprimer(String id) {
-		if (checkId()) {
+		if (checkId(id)) {
 			if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(parent,
 					"Voulez-vous supprimer l'album avec l'id " + id + "?", "Confirmation supprimer",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE)) {
@@ -79,7 +82,7 @@ public class controlerIndexAlbum implements ActionListener {
 
 	private void modifier(String id, String titre, String prix, String genre, String anneeSortie,
 			String maisonDistribution, String imageUrl, String artisteId) {
-		if (checkId() && checkInfo()) {
+		if (checkId(id) && checkInfo()) {
 			controlerSysteme cs = new controlerSysteme();
 			cs.modifierAlbum(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
 			this.vue.effacerChamp();
@@ -102,31 +105,38 @@ public class controlerIndexAlbum implements ActionListener {
 		}
 	}
 
-	private boolean checkNumber() {
+	private boolean checkNumber(String id, String prix) {
 		Boolean ok = true;
 
-		if (this.vue.getJText(2).getText().matches("^[0-9]*$")) {
+		if (id.matches("^[0-9]*$") | id.isEmpty()) {
 			this.vue.setErreur(0, "");
 		} else {
 			this.vue.setErreur(0, "Le id doit \u00EAtre un nombre");
 			ok = false;
 		}
 
+		if (prix.matches("^\\d+(\\.\\d{1,2})$") | prix.isEmpty()) {
+			this.vue.setErreur(2, "");
+		} else {
+			this.vue.setErreur(2, "Le prix doit \u00EAtre du format 0.00");
+			ok = false;
+		}
+
 		return ok;
 	}
 
-	private boolean checkId() {
+	private boolean checkId(String id) {
 		Boolean ok = true;
 
-		if (this.vue.getJText(0).getText().isEmpty()) {
+		if (id.isEmpty()) {
 			this.vue.setErreur(0, "Remplir le champ");
 			ok = false;
-		} else if (this.vue.getJText(0).getText().matches("^[0-9]+$")) {
-			if (this.modele.containt(Integer.parseInt(this.vue.getJText(0).getText())) != null) {
-				this.vue.setErreur(0, "");
-			} else {
+		} else if (id.matches("^[0-9]+$")) {
+			if (this.modele.containt(id) == null) {			
 				this.vue.setErreur(0, "Le id doit n'est pas valide");
 				ok = false;
+			} else {
+				this.vue.setErreur(0, "");
 			}
 		} else {
 			this.vue.setErreur(0, "Le id doit \u00EAtre un nombre");
@@ -137,27 +147,28 @@ public class controlerIndexAlbum implements ActionListener {
 	}
 
 	private Boolean checkInfo() {
-		Boolean ok = true;
+		Boolean[] verif = new Boolean[7];
 		int index = 1;
-
-		ok = checkTitre(ok, index++);
-
-		ok = checkPrix(ok, index++);
-
-		ok = checkGenre(ok, index++);
-
-		ok = checkDate(ok, index++);
-
-		ok = checkMaison(ok, index++);
-
-		ok = checkUrl(ok, index++);
-
-		ok = checkArtisteId(ok, index);
-
-		return ok;
+			
+		verif[index - 1] = checkTitre(index++);
+		verif[index - 1] = checkPrix(index++);
+		verif[index - 1] = checkGenre(index++);
+		verif[index - 1] = checkDate(index++);
+		verif[index - 1] = checkMaison(index++);
+		verif[index - 1] = checkUrl(index++);
+		verif[index - 1] = checkArtisteId(index);
+		
+		for (Boolean bool : verif) {
+			if(!bool) {
+				return false;
+			}
+		}
+		return true;
 	}
 
-	private Boolean checkArtisteId(Boolean ok, int index) {
+	private Boolean checkArtisteId(int index) {
+		Boolean ok = true;
+		
 		if (this.vue.getJText(index).getText().isEmpty()) {
 			this.vue.setErreur(index, "Remplir le champ");
 			ok = false;
@@ -177,7 +188,9 @@ public class controlerIndexAlbum implements ActionListener {
 		return ok;
 	}
 
-	private Boolean checkUrl(Boolean ok, int index) {
+	private Boolean checkUrl(int index) {
+		Boolean ok = true;
+		
 		if (this.vue.getJText(index).getText().isEmpty()) {
 			this.vue.setErreur(index, "Remplir le champ");
 			ok = false;
@@ -190,7 +203,9 @@ public class controlerIndexAlbum implements ActionListener {
 		return ok;
 	}
 
-	private Boolean checkMaison(Boolean ok, int index) {
+	private Boolean checkMaison(int index) {
+		Boolean ok = true;
+		
 		if (this.vue.getJText(index).getText().isEmpty()) {
 			this.vue.setErreur(index, "Remplir le champ");
 			ok = false;
@@ -203,21 +218,25 @@ public class controlerIndexAlbum implements ActionListener {
 		return ok;
 	}
 
-	private Boolean checkDate(Boolean ok, int index) {
+	private Boolean checkDate(int index) {
+		Boolean ok = true;
+		
 		if (this.vue.getJText(index).getText().isEmpty()) {
 			this.vue.setErreur(index, "Remplir le champ");
 			ok = false;
-		} else if (this.vue.getJText(index).getText()
-				.matches("^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$")) {
-			this.vue.setErreur(index, "La date doit \u00EAtre valide du format 9999-99-99");
-			ok = false;
-		} else {
+		} else if (this.vue.getJText(index).getText().matches("^[12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$")) {
 			this.vue.setErreur(index, "");
+		} else {
+			this.vue.setErreur(index, "La date doit \u00EAtre valide et du format AAAA-MM-JJ");
+			ok = false;
+
 		}
 		return ok;
 	}
 
-	private Boolean checkGenre(Boolean ok, int index) {
+	private Boolean checkGenre(int index) {
+		Boolean ok = true;
+		
 		if (this.vue.getJText(index).getText().isEmpty()) {
 			this.vue.setErreur(index, "Remplir le champ");
 			ok = false;
@@ -230,20 +249,24 @@ public class controlerIndexAlbum implements ActionListener {
 		return ok;
 	}
 
-	private Boolean checkPrix(Boolean ok, int index) {
+	private Boolean checkPrix(int index) {
+		Boolean ok = true;
+		
 		if (this.vue.getJText(index).getText().isEmpty()) {
 			this.vue.setErreur(index, "Remplir le champ");
 			ok = false;
 		} else if (this.vue.getJText(index).getText().matches("^\\d+(\\.\\d{1,2})$")) {
+			this.vue.setErreur(index, "");
+		} else {
 			this.vue.setErreur(index, "Le champ doit \u00EAtre du format 0.00");
 			ok = false;
-		} else {
-			this.vue.setErreur(index, "");
 		}
 		return ok;
 	}
 
-	private Boolean checkTitre(Boolean ok, int index) {
+	private Boolean checkTitre(int index) {
+		Boolean ok = true;
+		
 		if (this.vue.getJText(index).getText().isEmpty()) {
 			this.vue.setErreur(index, "Remplir le champ");
 			ok = false;
