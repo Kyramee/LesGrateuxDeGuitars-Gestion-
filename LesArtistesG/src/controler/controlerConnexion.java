@@ -1,39 +1,47 @@
 package controler;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class controlerConnexion {
-	private final String url = "jdbc:mysql://localhost/LesArtistesG";
-	private Connection connexion;
-	
-	private Connection getConnexion() throws SQLException, ClassNotFoundException {
-		Class.forName("org.gjt.mm.mysql.Driver"); 
-		return DriverManager.getConnection(url,"root","mysql");
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
+import vue.vueConnexion;
+import vue.vueJFrame;
+
+public class controlerConnexion implements ActionListener {
+
+	private controlerSysteme cs;
+	private vueConnexion vue;
+	private vueJFrame parent;
+
+	public controlerConnexion(vueJFrame parent, vueConnexion vue) {
+		this.parent = parent;
+		this.cs = parent.getCs();
+		this.vue = vue;
 	}
-	
-	public void closeConnexion() throws SQLException, ClassNotFoundException {
-		Class.forName("org.gjt.mm.mysql.Driver"); 
-		this.connexion.close();
-	}
-	
-	public ResultSet executerRequete(String requete) throws ClassNotFoundException, SQLException {
-		this.connexion = getConnexion();
 
-		Statement statement = connexion.createStatement();
-		
-		return statement.executeQuery(requete);
-
-	}
-	
-	public void update(String requete) throws SQLException, ClassNotFoundException {
-		this.connexion = getConnexion();
-
-		Statement statement = connexion.createStatement();
-		
-		statement.executeUpdate(requete);
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (((JButton) e.getSource()).getText().equals("Quitter")) {
+			System.exit(0);
+		} else {
+			if (cs.hasDataBase()) {
+				if (this.vue.getTextNom().isEmpty() | this.vue.getTextPassword().isEmpty()) {
+					JOptionPane.showMessageDialog(parent, "Le formulaire n'est pas remplis correctement", "Erreur",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (cs.checkUser(vue.getTextNom(), vue.getTextPassword())) {
+					vueJFrame v = new vueJFrame(cs);
+					v.vueOption();
+					parent.dispose();
+				} else {
+					JOptionPane.showMessageDialog(parent, "Le nom d'utilisateur ou le mot de passe est invalide",
+							"Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+			} else {
+				JOptionPane.showMessageDialog(parent, "Il n'y a pas de base de donn\u00E9es connect\u00E9e", "Erreur",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 }

@@ -128,6 +128,8 @@ public class vueGestionAlbum extends JPanel {
 		
 		this.artiste.setSelectedIndex(0);
 		
+		this.image.setIcon(null);;
+		
 		effacerErreur();
 	}
 

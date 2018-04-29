@@ -15,11 +15,13 @@ public class controlerIndexAlbum implements ActionListener {
 	private vueJFrame parent;
 	private vueGestionAlbum vue;
 	private modeleJTableAlbum modele;
+	private controlerSysteme cs;
 
 	public controlerIndexAlbum(vueJFrame parent, vueGestionAlbum vue, modeleJTableAlbum modele) {
 		this.parent = parent;
 		this.vue = vue;
 		this.modele = modele;
+		this.cs = parent.getCs();
 	}
 
 	@Override
@@ -31,10 +33,15 @@ public class controlerIndexAlbum implements ActionListener {
 		String anneeSortie = this.vue.getJText(4).getText();
 		String maisonDistribution = this.vue.getJText(5).getText();
 		String imageUrl = this.vue.getJText(6).getText();
+		String artiste;
+		if (this.vue.getArtiste().getSelectedIndex() == 0) {
+			artiste = "";
+		} else {
+			controlerSysteme cs = new controlerSysteme();
+			cs.accessTabArtiste("", this.vue.getArtiste().getSelectedItem().toString(), 2);
+			artiste = cs.getTabArtiste().get(0).getId();
+		}
 		
-		controlerSysteme cs = new controlerSysteme();
-		cs.accessTabArtiste("", this.vue.getArtiste().getSelectedItem().toString(), 2);
-		String artiste = cs.getTabArtiste().get(0).getId();
 		
 		this.vue.effacerErreur();
 
@@ -52,8 +59,8 @@ public class controlerIndexAlbum implements ActionListener {
 			rechercher(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artiste);
 			break;
 		case "Quitter":
-			vueJFrame vf = new vueJFrame();
-			vf.init();
+			vueJFrame vf = new vueJFrame(this.cs);
+			vf.vueOption();
 			this.parent.dispose();
 		}
 	}
@@ -73,9 +80,7 @@ public class controlerIndexAlbum implements ActionListener {
 			if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(parent,
 					"Voulez-vous supprimer l'album avec l'id " + id + "?", "Confirmation supprimer",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE)) {
-
-				controlerSysteme cs = new controlerSysteme();
-				cs.supprimer("Album", Integer.parseInt(this.vue.getJText(0).getText()));
+				this.cs.supprimer("Album", Integer.parseInt(this.vue.getJText(0).getText()));
 				this.modele.setDonnees(cs.getTabAlbum());
 				this.vue.effacerChamp();
 			}
@@ -85,8 +90,7 @@ public class controlerIndexAlbum implements ActionListener {
 	private void modifier(String id, String titre, String prix, String genre, String anneeSortie,
 			String maisonDistribution, String imageUrl, String artisteId) {
 		if (checkId(id) && checkInfo()) {
-			controlerSysteme cs = new controlerSysteme();
-			cs.modifierAlbum(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
+			this.cs.modifierAlbum(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
 			this.vue.setImage(imageUrl);
 			this.vue.effacerChamp();
 		}
@@ -95,12 +99,11 @@ public class controlerIndexAlbum implements ActionListener {
 	private void ajouter(String titre, String prix, String genre, String anneeSortie, String maisonDistribution,
 			String imageUrl, String artisteId) {
 		if (checkInfo()) {
-			controlerSysteme cs = new controlerSysteme();
-			if (cs.containtAlbum(titre)) {
+			if (this.cs.containtAlbum(titre)) {
 				JOptionPane.showMessageDialog(parent, "L'album " + titre + " est d\u00E9j\u00E0 pr\u00E9sent", "Erreur",
 						JOptionPane.ERROR_MESSAGE);
 			} else {
-				cs.ajouterAlbum(titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
+				this.cs.ajouterAlbum(titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
 				this.modele.setDonnees(cs.getTabAlbum());
 				this.vue.effacerChamp();
 			}

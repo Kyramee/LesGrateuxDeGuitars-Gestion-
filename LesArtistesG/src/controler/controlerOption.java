@@ -5,15 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 
 import vue.vueJFrame;
 
 public class controlerOption implements ActionListener {
 	
-	private JFrame parent;
+	private vueJFrame parent;
 	
-	public controlerOption(JFrame parent) {
+	public controlerOption(vueJFrame parent) {
 		this.parent = parent;
 	}
 
@@ -35,7 +34,7 @@ public class controlerOption implements ActionListener {
 	}
 	
 	public void afficher(Boolean vue) {
-		vueJFrame frame = new vueJFrame();
+		vueJFrame frame = new vueJFrame(this.parent.getCs());
 		frame.vueCentral(vue);
 		this.parent.dispose();
 	}

@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -18,7 +17,7 @@ public class vueOption extends JPanel {
 	private JButton[] tabBouton = new JButton[3];
 	private final String[] tabNom = { "Artiste", "Album", "Quitter" };
 
-	public vueOption(JFrame parent) {
+	public vueOption(vueJFrame parent) {
 		super(new BorderLayout());
 		parent.setSize(400, 220);
 		controlerOption co = new controlerOption(parent);
@@ -39,6 +38,7 @@ public class vueOption extends JPanel {
 			label.setHorizontalAlignment(JLabel.CENTER);
 			northPanel.add(label, BorderLayout.NORTH);
 		}
+		
 		return northPanel;
 	}
 

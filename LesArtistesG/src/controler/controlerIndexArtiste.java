@@ -15,11 +15,13 @@ public class controlerIndexArtiste implements ActionListener {
 	private vueJFrame parent;
 	private vueGestionArtiste vue;
 	private modeleJTableArtiste modele;
-
+	private controlerSysteme cs;
+	
 	public controlerIndexArtiste(vueJFrame parent, vueGestionArtiste vueArtiste, modeleJTableArtiste modele) {
 		this.parent = parent;
 		this.vue = vueArtiste;
 		this.modele = modele;
+		this.cs = parent.getCs();
 	}
 
 	@Override
@@ -44,19 +46,18 @@ public class controlerIndexArtiste implements ActionListener {
 			recherhcer(id, nom);
 			break;
 		case "Quitter":
-			vueJFrame vf = new vueJFrame();
-			vf.init();
+			vueJFrame vf = new vueJFrame(this.cs);
+			vf.vueOption();
 			this.parent.dispose();
 		}
 	}
 
 	private void recherhcer(String id, String nom) {
 		if (checkNumber(id)) {
-			controlerSysteme cs = new controlerSysteme();
-			cs.accessTabArtiste(id, nom, checkMembre());
+			this.cs.accessTabArtiste(id, nom, checkMembre());
 			this.modele.setDonnees(cs.getTabArtiste());
 
-			if (cs.getTabArtiste().isEmpty()) {
+			if (this.cs.getTabArtiste().isEmpty()) {
 				JOptionPane.showMessageDialog(parent, "Aucun ne artiste concorde avec vos param\u00EAtres de recherche",
 						"Erreur", JOptionPane.ERROR_MESSAGE);
 			}
@@ -68,14 +69,12 @@ public class controlerIndexArtiste implements ActionListener {
 			if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(parent,
 					"Voulez-vous supprimer l'artiste avec l'id " + id + "?", "Confirmation supprimer",
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)) {
-
-				controlerSysteme cs = new controlerSysteme();
-				if (cs.hasAlbum(id).isEmpty()) {
+				if (this.cs.hasAlbum(id).isEmpty()) {
 					JOptionPane.showMessageDialog(parent,
 							"L'artiste " + nom + " est assossi\u00E9 \u00E0 un ou plusieurs albums", "Erreur",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					cs.supprimer("Artiste", Integer.parseInt(id));
+					this.cs.supprimer("Artiste", Integer.parseInt(id));
 					this.modele.setDonnees(cs.getTabArtiste());
 					this.vue.effacerChamp();
 				}
@@ -85,8 +84,7 @@ public class controlerIndexArtiste implements ActionListener {
 
 	private void modifer(String id, String nom, String membre, String url) {
 		if (checkId(id) && checkInfo(nom, url)) {
-			controlerSysteme cs = new controlerSysteme();
-			cs.modifierArtiste(id, nom, membre, url);
+			this.cs.modifierArtiste(id, nom, membre, url);
 			this.modele.setDonnees(cs.getTabArtiste());
 			this.vue.effacerChamp();
 		}
@@ -94,15 +92,14 @@ public class controlerIndexArtiste implements ActionListener {
 
 	private void ajouter(String nom, String membre, String url) {
 		if (checkInfo(nom, url)) {
-			controlerSysteme cs = new controlerSysteme();
-			if (cs.containtArtiste(nom)) {
+			if (this.cs.containtArtiste(nom)) {
 				JOptionPane.showMessageDialog(parent, "L'artiste " + nom + " est d\u00E9j\u00E0 pr\u00E9sent", "Erreur",
 						JOptionPane.ERROR_MESSAGE);
 			} else {
 				if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(parent,
 						"Voulez-vous ajouter l'artiste " + nom + "?", "Confirmation ajout",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)) {
-					cs.ajouterArtiste(nom, membre, url);
+					this.cs.ajouterArtiste(nom, membre, url);
 					this.modele.setDonnees(cs.getTabArtiste());
 					this.vue.effacerChamp();
 				}
