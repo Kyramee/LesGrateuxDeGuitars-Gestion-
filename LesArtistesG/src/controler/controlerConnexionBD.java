@@ -13,31 +13,31 @@ public class controlerConnexionBD {
 	private Connection connexion;
 
 	public controlerConnexionBD() throws SQLException, ClassNotFoundException {
-		Class.forName("org.gjt.mm.mysql.Driver");
-		this.connexion = DriverManager.getConnection(url, "root", "mysql");
+		Class.forName( "org.gjt.mm.mysql.Driver" );
+		this.connexion = DriverManager.getConnection( url, "root", "mysql" );
 	}
 
 	public void closeConnexion() throws SQLException, ClassNotFoundException {
-		Class.forName("org.gjt.mm.mysql.Driver");
+		Class.forName( "org.gjt.mm.mysql.Driver" );
 		this.connexion.close();
 	}
 
-	public ResultSet executerRequete(String requete) throws ClassNotFoundException, SQLException {
+	public ResultSet executerRequete( String requete ) throws ClassNotFoundException, SQLException {
 		try {
 			Statement statement = connexion.createStatement();
-			return statement.executeQuery(requete);
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "La requete est invalide", "Erreur", JOptionPane.ERROR_MESSAGE);
+			return statement.executeQuery( requete );
+		} catch ( Exception e ) {
+			JOptionPane.showMessageDialog( null, "La requete est invalide", "Erreur", JOptionPane.ERROR_MESSAGE );
 		}
 		return null;
 	}
 
-	public void update(String requete) throws SQLException, ClassNotFoundException {
+	public void update( String requete ) throws SQLException, ClassNotFoundException {
 		try {
 			Statement statement = connexion.createStatement();
-			statement.executeUpdate(requete);
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "La requete est invalide", "Erreur", JOptionPane.ERROR_MESSAGE);
+			statement.executeUpdate( requete );
+		} catch ( Exception e ) {
+			JOptionPane.showMessageDialog( null, "La requete est invalide", "Erreur", JOptionPane.ERROR_MESSAGE );
 		}
 	}
 }

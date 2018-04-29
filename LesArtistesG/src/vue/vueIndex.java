@@ -19,7 +19,7 @@ public class vueIndex extends JPanel {
 	private JButton[] bouton = new JButton[5];
 
 	public vueIndex() {
-		super(new GridBagLayout());
+		super( new GridBagLayout() );
 
 		GridBagConstraints constraint = new GridBagConstraints();
 
@@ -28,28 +28,28 @@ public class vueIndex extends JPanel {
 		constraint.weighty = 1;
 		constraint.gridheight = 1;
 		constraint.gridwidth = 1;
-		constraint.insets = new Insets(5, 5, 5, 5);
+		constraint.insets = new Insets( 5, 5, 5, 5 );
 		constraint.gridx = 0;
 		constraint.gridy = 0;
 
-		for (int i = 0; i < 5; i++) {
-			this.bouton[i] = new JButton(this.nomBouton[i]);
-			this.add(this.bouton[i], constraint);
+		for ( int i = 0; i < 5; i++ ) {
+			this.bouton[i] = new JButton( this.nomBouton[i] );
+			this.add( this.bouton[i], constraint );
 			constraint.gridy++;
 		}
 	}
 
-	public void setListenerArtiste(vueJFrame parent, vueGestionArtiste vueArtiste, modeleJTableArtiste modele) {
+	public void setListenerArtiste( vueJFrame parent, vueGestionArtiste vueArtiste, modeleJTableArtiste modele ) {
 
-		for (int i = 0; i < 5; i++) {
-			this.bouton[i].addActionListener(new controlerIndexArtiste(parent, vueArtiste, modele));
+		for ( int i = 0; i < 5; i++ ) {
+			this.bouton[i].addActionListener( new controlerIndexArtiste( parent, vueArtiste, modele ) );
 		}
 	}
 
-	public void setListenerAlbum(vueJFrame parent, vueGestionAlbum vueArtiste, modeleJTableAlbum modele) {
+	public void setListenerAlbum( vueJFrame parent, vueGestionAlbum vueArtiste, modeleJTableAlbum modele ) {
 
-		for (int i = 0; i < 5; i++) {
-			this.bouton[i].addActionListener(new controlerIndexAlbum(parent, vueArtiste, modele));
+		for ( int i = 0; i < 5; i++ ) {
+			this.bouton[i].addActionListener( new controlerIndexAlbum( parent, vueArtiste, modele ) );
 		}
 	}
 }
