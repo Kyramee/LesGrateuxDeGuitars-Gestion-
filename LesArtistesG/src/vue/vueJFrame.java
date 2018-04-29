@@ -8,6 +8,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import controler.controlerSysteme;
+import controler.fermetureVueGestion;
+import controler.fermetureVueOption;
 
 public class vueJFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -16,7 +18,7 @@ public class vueJFrame extends JFrame {
 
 	public vueJFrame(controlerSysteme cs) {
 		this.cs = cs;
-		this.setResizable(true);
+		this.setResizable(false);
 		this.contenu = getContentPane();
 		ImageIcon iconeFenetre = new ImageIcon(getClass().getResource("../images/membre.png"));
 		this.setIconImage(iconeFenetre.getImage());
@@ -24,8 +26,8 @@ public class vueJFrame extends JFrame {
 	
 	public void vueConnexion() {
 		setTitle("LesArtistesG - Connexion");
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setBackground( Color.ORANGE );
-		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		setBounds( 100, 100, 630, 350 );
 		this.setLocationRelativeTo(null);
 		this.contenu.add(new vueConnexion(this));
@@ -33,8 +35,9 @@ public class vueJFrame extends JFrame {
 	}
 
 	public void vueOption() {
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.contenu.add(new vueOption(this), BorderLayout.CENTER);
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(new fermetureVueOption(this));
 		this.setTitle("LesArtistesG - Options");
 		this.setSize(400, 220);
 		this.setLocationRelativeTo(null);
@@ -42,9 +45,9 @@ public class vueJFrame extends JFrame {
 	}
 
 	public void vueCentral(Boolean vue) {
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("LesArtistesG - Gestion des " + ((vue) ? "artistes" : "albums"));
-		
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(new fermetureVueGestion(this));
 		vueCentral jp = new vueCentral(vue);
 		vueIndex vi = new vueIndex();
 		

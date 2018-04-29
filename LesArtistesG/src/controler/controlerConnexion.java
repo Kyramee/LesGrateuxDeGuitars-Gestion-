@@ -24,6 +24,7 @@ public class controlerConnexion implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (((JButton) e.getSource()).getText().equals("Quitter")) {
+			parent.dispose();
 			System.exit(0);
 		} else {
 			if (cs.hasDataBase()) {
