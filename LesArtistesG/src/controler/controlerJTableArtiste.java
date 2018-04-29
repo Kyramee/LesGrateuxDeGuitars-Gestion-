@@ -23,7 +23,6 @@ public class controlerJTableArtiste extends MouseAdapter {
 		int numLigne = table.getSelectedRow();
 		
 		controlerSysteme cs = new controlerSysteme();
-
 		cs.accessTabArtiste(String.valueOf(this.table.getValueAt(numLigne, 0)), "", 2);
 
 		this.vue.getJText(2).setText(cs.getTabArtiste().get(0).getId());

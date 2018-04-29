@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
-import javax.swing.text.StyledEditorKit.BoldAction;
 
 import modele.Album;
 import modele.Artiste;
@@ -103,10 +102,10 @@ public class controlerSysteme {
 			ResultSet result = cc.executerRequete(requete);
 
 			while (result.next()) {
-				this.tabAlbum.add(new Album(result.getInt("id"), result.getString("titre"), result.getDouble("prix"),
+				this.tabAlbum.add(new Album(result.getString("id"), result.getString("titre"), result.getString("prix"),
 						result.getString("genre"), result.getString("annee_sortie"),
 						result.getString("maison_distribution"), result.getString("image_url"),
-						result.getInt("artiste_id")));
+						result.getString("artiste_id")));
 			}
 			cc.closeConnexion();
 		} catch (Exception e) {
@@ -145,6 +144,7 @@ public class controlerSysteme {
 
 	public void modifierAlbum(String id, String titre, String prix, String genre, String anneeSortie,
 			String maisonDistribution, String imageUrl, String idArtiste) {
+
 		String requete = "UPDATE Album SET titre = '" + titre + "', prix = " + prix + ", genre = '" + genre
 				+ "', annee_sortie = '" + anneeSortie + "', " + "maison_distribution = '" + maisonDistribution
 				+ "', image_url = '" + imageUrl + "', artiste_id = " + idArtiste + " WHERE id = " + id;
@@ -153,7 +153,67 @@ public class controlerSysteme {
 			cc.update(requete);
 			cc.closeConnexion();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Le id n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "L'id n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+		accessTabAlbum();
+	}
+	
+	public void modifierAlbumTitre(String id, String titre) {
+		String requete = "UPDATE Album SET titre = '" + titre + "' WHERE id = " + id;
+		
+		try {
+			cc.update(requete);
+			cc.closeConnexion();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "L'id n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+		accessTabAlbum();
+	}
+	
+	public void modifierAlbumPrix(String id, String prix) {
+		String requete = "UPDATE Album SET prix = " + prix + " WHERE id = " + id;
+		
+		try {
+			cc.update(requete);
+			cc.closeConnexion();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "L'id n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+		accessTabAlbum();
+	}
+	
+	public void modifierAlbumGenre(String id, String genre) {
+		String requete = "UPDATE Album SET genre = '" + genre + "' WHERE id = " + id;
+		
+		try {
+			cc.update(requete);
+			cc.closeConnexion();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "L'id n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+		accessTabAlbum();
+	}
+	
+	public void modifierAlbumAnnee(String id, String annee) {
+		String requete = "UPDATE Album SET annee_sortie = '" + annee + "' WHERE id = " + id;
+		
+		try {
+			cc.update(requete);
+			cc.closeConnexion();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "L'id n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+		accessTabAlbum();
+	}
+	
+	public void modifierAlbumMaison(String id, String maison) {
+		String requete = "UPDATE Album SET maison_distribution = '" + maison + "' WHERE id = " + id;
+		
+		try {
+			cc.update(requete);
+			cc.closeConnexion();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "L'id n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);
 		}
 		accessTabAlbum();
 	}
@@ -279,10 +339,10 @@ public class controlerSysteme {
 					+ " AND Album.artiste_id = Artiste.id");
 
 			while (result.next()) {
-				this.tabAlbum.add(new Album(result.getInt("id"), result.getString("titre"), result.getDouble("prix"),
+				this.tabAlbum.add(new Album(result.getString("id"), result.getString("titre"), result.getString("prix"),
 						result.getString("genre"), result.getString("annee_sortie"),
 						result.getString("maison_distribution"), result.getString("image_url"),
-						result.getInt("artiste_id")));
+						result.getString("artiste_id")));
 			}
 			cc.closeConnexion();
 		} catch (Exception e) {

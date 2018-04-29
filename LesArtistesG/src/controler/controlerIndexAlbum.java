@@ -31,22 +31,25 @@ public class controlerIndexAlbum implements ActionListener {
 		String anneeSortie = this.vue.getJText(4).getText();
 		String maisonDistribution = this.vue.getJText(5).getText();
 		String imageUrl = this.vue.getJText(6).getText();
-		String artisteId = this.vue.getJText(7).getText();
+		
+		controlerSysteme cs = new controlerSysteme();
+		cs.accessTabArtiste("", this.vue.getArtiste().getSelectedItem().toString(), 2);
+		String artiste = cs.getTabArtiste().get(0).getId();
 		
 		this.vue.effacerErreur();
 
 		switch (((JButton) e.getSource()).getText()) {
 		case "Ajouter":
-			ajouter(titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
+			ajouter(titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artiste);
 			break;
 		case "Modifier":
-			modifier(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
+			modifier(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artiste);
 			break;
 		case "Supprimer":
 			supprimer(id);
 			break;
 		case "Rechercher":
-			rechercher(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
+			rechercher(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artiste);
 			break;
 		case "Quitter":
 			vueJFrame vf = new vueJFrame();
@@ -58,7 +61,6 @@ public class controlerIndexAlbum implements ActionListener {
 	private void rechercher(String id, String titre, String prix, String genre, String anneeSortie,
 			String maisonDistribution, String imageUrl, String artisteId) {
 		if (checkNumber(id, prix)) {
-			System.out.println("ok");
 			controlerSysteme cs = new controlerSysteme();
 			cs.accessTabAlbum(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
 			this.modele.setDonnees(cs.getTabAlbum());
@@ -85,6 +87,7 @@ public class controlerIndexAlbum implements ActionListener {
 		if (checkId(id) && checkInfo()) {
 			controlerSysteme cs = new controlerSysteme();
 			cs.modifierAlbum(id, titre, prix, genre, anneeSortie, maisonDistribution, imageUrl, artisteId);
+			this.vue.setImage(imageUrl);
 			this.vue.effacerChamp();
 		}
 	}
@@ -115,10 +118,10 @@ public class controlerIndexAlbum implements ActionListener {
 			ok = false;
 		}
 
-		if (prix.matches("^\\d+(\\.\\d{1,2})$") | prix.isEmpty()) {
+		if (prix.matches("^\\d+$") | prix.isEmpty()) {
 			this.vue.setErreur(2, "");
 		} else {
-			this.vue.setErreur(2, "Le prix doit \u00EAtre du format 0.00");
+			this.vue.setErreur(2, "Le prix doit \u00EAtre un nombre");
 			ok = false;
 		}
 
@@ -156,7 +159,7 @@ public class controlerIndexAlbum implements ActionListener {
 		verif[index - 1] = checkDate(index++);
 		verif[index - 1] = checkMaison(index++);
 		verif[index - 1] = checkUrl(index++);
-		verif[index - 1] = checkArtisteId(index);
+		verif[index - 1] = checkArtiste(index);
 		
 		for (Boolean bool : verif) {
 			if(!bool) {
@@ -166,25 +169,16 @@ public class controlerIndexAlbum implements ActionListener {
 		return true;
 	}
 
-	private Boolean checkArtisteId(int index) {
+	private Boolean checkArtiste(int index) {
 		Boolean ok = true;
 		
-		if (this.vue.getJText(index).getText().isEmpty()) {
-			this.vue.setErreur(index, "Remplir le champ");
+		if (this.vue.getArtiste().getSelectedItem().toString().isEmpty()) {
+			this.vue.setErreur(index, "S\u00E9lectionnez un artiste");
 			ok = false;
-		} else if (this.vue.getJText(index).getText().matches("^[0-9]+$")) {
-			controlerSysteme cs = new controlerSysteme();
-			cs.accessTabArtiste(this.vue.getJText(index).getText(), "", 2);
-			if (cs.getTabArtiste().isEmpty()) {
-				this.vue.setErreur(index, "Le id n'est pas valide");
-				ok = false;
-			} else {
-				this.vue.setErreur(index, "");
-			}
 		} else {
-			this.vue.setErreur(index, "Le id doit \u00EAtre un nombre");
-			ok = false;
+			this.vue.setErreur(index, "");
 		}
+		
 		return ok;
 	}
 
@@ -255,10 +249,10 @@ public class controlerIndexAlbum implements ActionListener {
 		if (this.vue.getJText(index).getText().isEmpty()) {
 			this.vue.setErreur(index, "Remplir le champ");
 			ok = false;
-		} else if (this.vue.getJText(index).getText().matches("^\\d+(\\.\\d{1,2})$")) {
+		} else if (this.vue.getJText(index).getText().matches("^\\d+$")) {
 			this.vue.setErreur(index, "");
 		} else {
-			this.vue.setErreur(index, "Le champ doit \u00EAtre du format 0.00");
+			this.vue.setErreur(index, "Le champ doit \u00EAtre un chiffre");
 			ok = false;
 		}
 		return ok;

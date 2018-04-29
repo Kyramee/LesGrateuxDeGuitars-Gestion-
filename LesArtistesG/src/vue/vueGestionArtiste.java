@@ -16,7 +16,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import controler.controlerSysteme;
 import modele.Album;
 import modele.modeleSmallJTableAlbum;
 
@@ -89,7 +88,7 @@ public class vueGestionArtiste extends JPanel {
 		constraint.gridy = 0;
 		add(this.jText[2], constraint);
 		
-		this.photo = new JLabel("");
+		this.photo = new JLabel();
 		constraint.gridx = 1;
 		constraint.gridy = 4;
 		add(this.photo, constraint);
@@ -97,8 +96,7 @@ public class vueGestionArtiste extends JPanel {
 		constraint.gridx = 3;
 		constraint.fill = GridBagConstraints.NONE;
 		
-		controlerSysteme cs = new controlerSysteme();
-		this.album = new modeleSmallJTableAlbum(cs.getTabAlbum());
+		this.album = new modeleSmallJTableAlbum(new ArrayList<>());
 		JScrollPane sp = new JScrollPane(new JTable(this.album));
 		sp.setPreferredSize(new Dimension(200, 80));
 		
@@ -134,6 +132,7 @@ public class vueGestionArtiste extends JPanel {
 			erreur.setText("");
 		}
 	}
+	
 	public void setPhoto(String url) {
 		try {
 			this.photo.setIcon(new ImageIcon(getClass().getResource("../images/" + url)));

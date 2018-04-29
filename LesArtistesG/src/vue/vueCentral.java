@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import controler.controlerJTableAlbum;
 import controler.controlerJTableArtiste;
 import controler.controlerSysteme;
 import modele.modeleColonneId;
@@ -44,8 +45,9 @@ public class vueCentral extends JPanel{
 			table.getColumnModel().getColumn(2).setCellRenderer(new modeleColonneMembre());
 			scroListe.setPreferredSize(new Dimension(500, 180));
 		} else {
-			modeleAlbum = new modeleJTableAlbum(ga.getTabAlbum());
+			modeleAlbum = new modeleJTableAlbum(ga.getTabAlbum(), this.vueAlbum);
 			table.setModel(modeleAlbum);
+			table.addMouseListener(new controlerJTableAlbum(this.vueAlbum, table));
 			table.getColumnModel().getColumn(0).setCellRenderer(new modeleColonneId());
 			scroListe.setPreferredSize(new Dimension(600, 200));
 		}
