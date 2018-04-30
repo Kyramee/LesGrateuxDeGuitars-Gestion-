@@ -1,5 +1,6 @@
 package vue;
 
+import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -36,6 +37,9 @@ public class vueIndex extends JPanel {
 			this.bouton[i] = new JButton( this.nomBouton[i] );
 			this.add( this.bouton[i], constraint );
 			constraint.gridy++;
+			this.bouton[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+			this.bouton[i].setToolTipText("<html><img src=\"" + getClass().getResource("../images/" + this.nomBouton[i] + ".jpeg")
+			        + "\">");
 		}
 	}
 

@@ -1,7 +1,7 @@
 import controler.controlerSysteme;
 import vue.vueJFrame;
 
-public class MainTemp {
+public class LesArtistesG {
 
 	public static void main(String[] args) {
 			
