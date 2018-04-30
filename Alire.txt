@@ -1,0 +1,13 @@
+Eleves:
+Adrien Cote-Laferriere
+Stecen Desroches
+
+Utilisateur ---> Mot de passe
+Adrien		 admin
+Farida		 admin
+Groot		 root
+Steven		 admin
+Testeur		 test
+
+GitHub:
+https://github.com/Kyramee/LesGrateuxDeGuitars-Gestion-
