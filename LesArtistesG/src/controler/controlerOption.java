@@ -1,7 +1,10 @@
 package controler;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -28,6 +31,9 @@ public class controlerOption implements ActionListener {
 		case "Album":
 			afficher( false );
 			break;
+		case "Aide en ligne":
+			afficherAide();
+			break;
 		case "Quitter":
 			close();
 		}
@@ -52,5 +58,15 @@ public class controlerOption implements ActionListener {
 		vueJFrame frame = new vueJFrame( this.parent.getCs() );
 		frame.vueCentral( vue );
 		this.parent.dispose();
+	}
+
+	private void afficherAide() {
+		try {
+			File aideFichier = new File(
+					getClass().getResource( "../AideEnLigne/LesGratteux.chm" ).toString().replace( "file:/", "" ) );
+			Desktop.getDesktop().open( aideFichier );
+		} catch ( IOException msg ) {
+			System.out.println( msg );
+		}
 	}
 }

@@ -15,8 +15,8 @@ import controler.controlerOption;
 public class vueOption extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private JButton[] tabBouton = new JButton[3];
-	private final String[] tabNom = { "Artiste", "Album", "Quitter" };
+	private JButton[] tabBouton = new JButton[4];
+	private final String[] tabNom = { "Artiste", "Album", "Aide en ligne", "Quitter" };
 
 	public vueOption( vueJFrame parent ) {
 		super( new BorderLayout() );
@@ -50,9 +50,9 @@ public class vueOption extends JPanel {
 			this.tabBouton[i].setPreferredSize( dBouton );
 			this.tabBouton[i].addActionListener( co );
 			centerPanel.add( this.tabBouton[i], BorderLayout.CENTER );
-			this.tabBouton[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
-			this.tabBouton[i].setToolTipText("<html><img src=\"" + getClass().getResource("../images/" + this.tabNom[i] + ".jpeg")
-			        + "\">");
+			this.tabBouton[i].setCursor( new Cursor( Cursor.HAND_CURSOR ) );
+			this.tabBouton[i].setToolTipText(
+					"<html><img src=\"" + getClass().getResource( "../images/" + this.tabNom[i] + ".jpeg" ) + "\">" );
 		}
 		return centerPanel;
 	}
