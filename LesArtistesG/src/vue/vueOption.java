@@ -50,12 +50,9 @@ public class vueOption extends JPanel {
 			this.tabBouton[i].setPreferredSize( dBouton );
 			this.tabBouton[i].addActionListener( co );
 			centerPanel.add( this.tabBouton[i], BorderLayout.CENTER );
-<<<<<<< HEAD
 			this.tabBouton[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
 			this.tabBouton[i].setToolTipText("<html><img src=\"" + getClass().getResource("../images/" + this.tabNom[i] + ".jpeg")
 			        + "\">");
-=======
->>>>>>> 344bfb3591e07a0d58f11f66fe02782a6e7d0c8d
 		}
 		return centerPanel;
 	}
