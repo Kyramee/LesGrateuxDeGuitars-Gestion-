@@ -146,7 +146,7 @@ public class vueGestionAlbum extends JPanel {
 
 	public void setImage( String url ) {
 		try {
-			this.image.setIcon( new ImageIcon( getClass().getResource( "../images/" + url ) ) );
+			this.image.setIcon( new ImageIcon( getClass().getResource( "../images_Album/" + url ) ) );
 		} catch ( Exception e ) {
 			this.image.setIcon( new ImageIcon( getClass().getResource( "../images/erreur.jpeg" ) ) );
 		}

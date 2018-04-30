@@ -148,7 +148,7 @@ public class vueGestionArtiste extends JPanel {
 
 	public void setPhoto( String url ) {
 		try {
-			this.photo.setIcon( new ImageIcon( getClass().getResource( "../images/" + url ) ) );
+			this.photo.setIcon( new ImageIcon( getClass().getResource( "../images_Artiste/" + url ) ) );
 		} catch ( Exception e ) {
 			this.photo.setIcon( new ImageIcon( getClass().getResource( "../images/erreur.jpeg" ) ) );
 		}
