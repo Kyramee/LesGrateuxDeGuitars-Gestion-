@@ -35,7 +35,6 @@ public class vueConnexion extends JPanel {
 		ActionListener listeneur = new controlerConnexion( parent, this );
 
 		settingJLabel();
-<<<<<<< HEAD
 
 		settingJTextField();
 
@@ -45,28 +44,6 @@ public class vueConnexion extends JPanel {
 		fontEcran.setIcon(new ImageIcon(getClass().getResource("../images/ecranConnexion.png")));
 		fontEcran.setBounds(10, -29, 634, 375);
 		add(fontEcran);
-	}
-
-	private void settingJLabel() {
-		JLabel utilisateur = new JLabel("Nom d'utilisateur : ");
-		utilisateur.setFont(new Font("Tahoma", Font.BOLD, 11));
-		utilisateur.setBounds(190, 123, 133, 14);
-		add(utilisateur);
-
-		JLabel password = new JLabel("Password : ");
-		password.setFont(new Font("Tahoma", Font.BOLD, 11));
-		password.setBounds(228, 154, 83, 14);
-		add(password);
-=======
-
-		settingJTextField();
-
-		settingJButton( listeneur );
-
-		JLabel fontEcran = new JLabel( "" );
-		fontEcran.setIcon( new ImageIcon( getClass().getResource( "../images/ecranConnexion.png" ) ) );
-		fontEcran.setBounds( 10, -29, 634, 375 );
-		add( fontEcran );
 	}
 
 	private void settingJLabel() {
@@ -90,27 +67,11 @@ public class vueConnexion extends JPanel {
 
 	private void settingJTextField() {
 		textPassword = new JPasswordField();
-		textPassword.setBounds( 308, 151, 145, 20 );
-		add( textPassword );
-		textPassword.setColumns( 10 );
->>>>>>> 344bfb3591e07a0d58f11f66fe02782a6e7d0c8d
-
-		lblLesGratteuxDe = new JLabel("Les gratteux de guitar Gestion");
-		lblLesGratteuxDe.setForeground(Color.BLACK);
-		lblLesGratteuxDe.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 21));
-		lblLesGratteuxDe.setBackground(Color.RED);
-		lblLesGratteuxDe.setBounds(117, 57, 368, 38);
-		add(lblLesGratteuxDe);
-	}
-
-	private void settingJTextField() {
-		textPassword = new JPasswordField();
 		textPassword.setBounds(308, 151, 145, 20);
 		add(textPassword);
 		textPassword.setColumns(10);
 
 		textNom = new JTextField();
-<<<<<<< HEAD
 		textNom.setBounds(308, 120, 145, 20);
 		textNom.setColumns(10);
 		add(textNom);
@@ -129,22 +90,9 @@ public class vueConnexion extends JPanel {
 		btnQuitter.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnQuitter.setToolTipText("<html><img src=\"" + getClass().getResource("../images/Quitter.jpeg") + "\">");
 		add(btnQuitter);
-=======
 		textNom.setBounds( 308, 120, 145, 20 );
 		textNom.setColumns( 10 );
 		add( textNom );
-	}
-
-	private void settingJButton( ActionListener listeneur ) {
-		btnValide = new JButton( "valider" );
-		btnValide.addActionListener( listeneur );
-		btnValide.setBounds( 216, 182, 107, 23 );
-		add( btnValide );
-		btnQuitter = new JButton( "Quitter" );
-		btnQuitter.addActionListener( listeneur );
-		btnQuitter.setBounds( 333, 182, 107, 23 );
-		add( btnQuitter );
->>>>>>> 344bfb3591e07a0d58f11f66fe02782a6e7d0c8d
 	}
 
 	/**
